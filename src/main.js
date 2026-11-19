@@ -130,9 +130,11 @@ function seasonBar(v,mo){var s='<span class="sb" aria-hidden="true">';for(var i=
 function filtered(){
   var m=state.month,q=foldQ(state.q);
   return V.filter(function(v){
-    if(state.seg==="stagione"&&!(v.m&&v.m.indexOf(m)>-1))return false;
-    if(state.seg==="sempre"&&v.m)return false;
-    if(state.cat!=="Tutti"&&v.cat!==state.cat)return false;
+    if(!q){
+      if(state.seg==="stagione"&&!(v.m&&v.m.indexOf(m)>-1))return false;
+      if(state.seg==="sempre"&&v.m)return false;
+      if(state.cat!=="Tutti"&&v.cat!==state.cat)return false;
+    }
     if(q&&foldHay(v.n+" "+(v.k||[]).join(" ")).indexOf(q)<0)return false;
     return true;
   }).sort(function(a,b){return a.n.localeCompare(b.n,"it")});
@@ -151,8 +153,9 @@ function card(v,i){
 }
 function renderGrid(){
   var L=filtered();
-  var label=state.seg==="stagione"?"di stagione":(state.seg==="sempre"?"sempre disponibili":"in elenco");
-  $("#count").textContent=L.length+" "+(L.length===1?"ingrediente":"ingredienti")+" "+label+(state.seg==="stagione"?" · "+MESI[state.month-1].toLowerCase():"");
+  var srch=!!state.q.trim();
+  var label=srch?"trovati in tutto l’elenco":(state.seg==="stagione"?"di stagione":(state.seg==="sempre"?"sempre disponibili":"in elenco"));
+  $("#count").textContent=L.length+" "+(L.length===1?"ingrediente":"ingredienti")+" "+label+(!srch&&state.seg==="stagione"?" · "+MESI[state.month-1].toLowerCase():"");
   $("#grid").innerHTML=L.length?L.map(card).join(""):
     '<div class="empty"><b>Niente con questi filtri</b>Prova un altro mese o togli la ricerca.<br><br><button class="btn" data-act="reset">Azzera filtri</button></div>';
 }
