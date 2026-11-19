@@ -79,7 +79,7 @@ function fmtAmt(a,u,f){
   return t+(word?" "+word:"");
 }
 function stemOf(v){var w=v.n.toLowerCase().split(/[\s(]/)[0];return w.length<=5?w:w.slice(0,w.length-1)}
-var EXTRA={spaghetti:["spaghett","orecchiett","maccheron","trofie","penne","rigaton","tagliatell","bucatin","linguin","tonnarell"],zucca:["zucche"],acciughe:["acciug"],uova:["uovo","uova"]};
+var EXTRA={spaghetti:["spaghett","orecchiett","maccheron","trofie","penne","rigaton","tagliatell","bucatin","linguin","tonnarell"],zucca:["zucche"],acciughe:["acciug"],uova:["uovo","uova","tuorl","album"]};
 var STEMS=V.map(function(v){return {id:v.id,k:(v.k||[stemOf(v)]).concat(EXTRA[v.id]||[])}});
 function matchIng(name){
   var norm=" "+String(name).toLowerCase().split(/[^a-zàèéìòù]+/).filter(Boolean).join(" "),best=null,bl=0;

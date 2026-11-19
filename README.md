@@ -4,7 +4,7 @@ App di cucina: ingredienti di stagione, 225 ricette italiane divise per regione,
 
 ## Cosa c'è
 
-- **Ingredienti**: 177 ingredienti (verdure, frutta, erbe e spezie, latticini e uova, carne, pesce, dispensa) con selettore del mese (di stagione / sempre / tutti), ricerca e categorie. Ogni scheda ha stagione, come si conserva, con cosa si abbina, cosa usare se manca, un consiglio e l'elenco delle ricette che lo usano (anche le tue).
+- **Ingredienti**: 200 ingredienti (verdure, frutta, erbe e spezie, latticini e uova, carne, pesce, dispensa) con selettore del mese (di stagione / sempre / tutti), ricerca e categorie. Ogni scheda ha stagione, come si conserva, con cosa si abbina, cosa usare se manca, un consiglio e l'elenco delle ricette che lo usano (anche le tue).
 - **Menu**: crea un menu (es. Cena di Natale), scegli le ricette e il numero di persone: la lista della spesa somma le quantità, le raggruppa per reparto e si può spuntare, copiare o condividere.
 - **Ricettario**: 225 ricette di base per le 20 regioni, filtrabili per regione e tipo di piatto. Dosi che si adattano al numero di persone. Ogni ricetta si può **modificare** (con «Originale» per tornare indietro), segnare come **preferita**, e si possono **aggiungere ricette proprie**.
 - **Scansiona un foglio**: scatti o scegli una foto, il testo viene letto sul telefono (Tesseract, italiano, offline) e finisce nei campi della ricetta, da correggere. Funziona bene con testo stampato o in stampatello; il corsivo a mano viene letto male. La foto resta allegata alla ricetta.
