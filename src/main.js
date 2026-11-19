@@ -228,7 +228,7 @@ var TEMPI=[
  ["Ceci secchi (ammollati)","90–120 min"],["Petto di pollo in padella","6–7 min per lato"],["Filetto di salmone in padella","4 + 3 min"],
  ["Pollo intero 1,5 kg in forno a 200 °C","75–90 min"]
 ];
-var timers=[], tick=null, tid=1, audioCtx=null;
+var fullId=null,timers=[], tick=null, tid=1, audioCtx=null;
 function pad(n){return n<10?"0"+n:""+n}
 function fmtClock(s){s=Math.max(0,Math.ceil(s));var h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (h?h+":":"")+pad(m)+":"+pad(s%60)}
 function beep(){
@@ -243,19 +243,30 @@ function beep(){
   }catch(e){}
   try{if(navigator.vibrate)navigator.vibrate([300,150,300,150,300])}catch(e){}
 }
+function renderFull(){
+  var el=document.getElementById("tmFull"),t=fullId&&timers.filter(function(x){return x.id===fullId})[0];
+  if(!t){if(el)el.remove();fullId=null;document.body.style.overflow=state.sheet?"hidden":"";return}
+  var left=(t.end-Date.now())/1000,done=left<=0,pct=Math.max(0,Math.min(100,100*(1-left/(t.total||1))));
+  if(!el){el=document.createElement("div");el.id="tmFull";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");document.body.appendChild(el);document.body.style.overflow="hidden"}
+  el.className="tmfull"+(done?" done":"");
+  el.innerHTML='<div class="tmf-top"><button class="iconbtn" data-act="tmin" aria-label="Riduci a icona">'+IC.back+'</button><span>'+esc(t.label)+'</span><span></span></div>'+
+    '<div class="tmf-mid"><b>'+(done?"Pronto!":fmtClock(left))+'</b><div class="tmf-bar" aria-hidden="true"><i style="width:'+pct+'%"></i></div></div>'+
+    '<div class="tmf-btns">'+(done?'<button class="btn pri" data-act="tstop" data-id="'+t.id+'">Chiudi</button>':'<button class="btn" data-act="tplus" data-id="'+t.id+'">+1 min</button><button class="btn danger" data-act="tstop" data-id="'+t.id+'">Ferma</button>')+'</div>';
+}
 function renderTimers(){
+  renderFull();
   var el=$("#timers");if(!el)return;
   var now=Date.now();
   el.innerHTML=timers.length?timers.map(function(t){
     var left=(t.end-now)/1000;
-    return '<div class="timer'+(left<=0?" done":"")+'"><div><small>'+esc(t.label)+'</small><b>'+(left<=0?"Pronto!":fmtClock(left))+'</b></div><span></span><button data-act="tdel" data-id="'+t.id+'" aria-label="Elimina timer">'+IC.x+'</button></div>';
+    return '<div class="timer'+(left<=0?" done":"")+'" data-act="tfull" data-id="'+t.id+'"><div><small>'+esc(t.label)+'</small><b>'+(left<=0?"Pronto!":fmtClock(left))+'</b></div><span></span><button data-act="tdel" data-id="'+t.id+'" aria-label="Elimina timer">'+IC.x+'</button></div>';
   }).join(""):'<p class="note" style="margin:0">Nessun timer attivo.</p>';
 }
 function ensureTick(){
   if(tick)return;
   tick=setInterval(function(){
     var now=Date.now(),fired=false;
-    timers.forEach(function(t){if(!t.done&&t.end<=now){t.done=true;fired=true;toast("Timer «"+t.label+"» finito")}});
+    timers.forEach(function(t){if(!t.done&&t.end<=now){t.done=true;fired=true;fullId=t.id;toast("Timer «"+t.label+"» finito")}});
     if(fired)beep();
     renderTimers();
     if(!timers.length){clearInterval(tick);tick=null}
@@ -263,7 +274,8 @@ function ensureTick(){
 }
 function addTimer(min,label){
   min=+min;if(!(min>0)){toast("Scrivi quanti minuti");return}
-  timers.push({id:tid++,label:label||(min+" min"),end:Date.now()+min*60000,done:false});
+  var nt={id:tid++,label:label||(min+" min"),end:Date.now()+min*60000,total:min*60,done:false};
+  timers.push(nt);fullId=nt.id;
   ensureTick();renderTimers();
 }
 function toolsHTML(){
@@ -271,12 +283,10 @@ function toolsHTML(){
     '<div class="two"><label class="fld"><span>Minuti</span><input id="tmM" type="number" inputmode="decimal" min="0" step="any" placeholder="10"></label>'+
     '<label class="fld"><span>Nome</span><input id="tmL" type="text" placeholder="Pasta" maxlength="24"></label></div>'+
     '<div class="preset"><button class="chip" data-act="tpreset" data-m="3">3 min</button><button class="chip" data-act="tpreset" data-m="5">5 min</button><button class="chip" data-act="tpreset" data-m="10">10 min</button><button class="chip" data-act="tpreset" data-m="15">15 min</button><button class="chip" data-act="tpreset" data-m="30">30 min</button></div>'+
-    '<div style="margin-top:12px"><button class="btn pri" data-act="tadd" style="width:100%">Avvia timer</button></div><div class="timers" id="timers"></div></section>'+
+    '<div style="margin-top:12px"><button class="btn pri" data-act="tadd" style="width:100%">Avvia</button></div><div class="timers" id="timers"></div></section>'+
   '<section class="tool"><h3>Cosa posso cucinare</h3><p class="sub">Scrivi gli ingredienti che hai in casa: ti mostro le ricette che puoi fare, o quasi. Sale, olio e pepe li do per scontati.</p>'+
     '<label class="search"><input id="ckQ" type="search" placeholder="Es. patate, uova, zucchine…" autocomplete="off" aria-label="Cerca un ingrediente che hai"></label>'+
     '<div class="preset" id="ckSug"></div><div class="preset" id="ckSel"></div><div id="ckRes"></div></section>'+
-  '<section class="tool"><h3>Tempi di cottura</h3><p class="sub">Tempi indicativi: dipendono da dimensione, fiamma e forno.</p><ul class="times">'+
-    TEMPI.map(function(t){return '<li><span>'+esc(t[0])+'</span><b>'+esc(t[1])+'</b></li>'}).join("")+'</ul></section>'+
   '<section class="tool"><h3>I tuoi dati</h3><p class="sub">Preferite, ricette tue, modifiche e menu restano solo su questo telefono. Salva un file di backup per non perderli (cambio telefono, reinstallazione) e ricaricalo quando serve.</p>'+
     '<div class="actions"><button class="btn pri" data-act="export">Salva backup</button><button class="btn" data-act="import">Carica backup</button></div>'+
     '<input id="fileImp" type="file" accept=".json,application/json" hidden></section>';
@@ -656,7 +666,11 @@ document.addEventListener("click",function(e){
   else if(a==="export"){exportBackup()}
   else if(a==="import"){var fi=$("#fileImp");if(fi)fi.click()}
   else if(a==="tadd"){addTimer($("#tmM").value,$("#tmL").value.trim());$("#tmM").value="";$("#tmL").value=""}
-  else if(a==="tpreset"){addTimer(t.dataset.m,$("#tmL").value.trim())}
+  else if(a==="tpreset"){var tm=$("#tmM");if(tm)tm.value=t.dataset.m}
+  else if(a==="tfull"){fullId=+id;renderTimers()}
+  else if(a==="tmin"){fullId=null;renderTimers()}
+  else if(a==="tplus"){var pt=timers.filter(function(x){return x.id===+id})[0];if(pt){pt.end+=60000;pt.total+=60;renderTimers()}}
+  else if(a==="tstop"){timers=timers.filter(function(x){return x.id!==+id});if(fullId===+id)fullId=null;renderTimers()}
   else if(a==="tdel"){timers=timers.filter(function(x){return x.id!==+id});renderTimers()}
 });
 document.addEventListener("keydown",function(e){
