@@ -4,7 +4,7 @@ App di cucina: ingredienti di stagione, ricette italiane divise per regione, il 
 
 ## Cosa c'è
 
-- **Ingredienti**: 33 ingredienti con selettore del mese (di stagione / sempre / tutti), ricerca e categorie. Ogni scheda ha stagione, come si conserva, con cosa si abbina, cosa usare se manca, un consiglio e l'elenco delle ricette che lo usano (anche le tue).
+- **Ingredienti**: 177 ingredienti (verdure, frutta, erbe e spezie, latticini e uova, carne, pesce, dispensa) con selettore del mese (di stagione / sempre / tutti), ricerca e categorie. Ogni scheda ha stagione, come si conserva, con cosa si abbina, cosa usare se manca, un consiglio e l'elenco delle ricette che lo usano (anche le tue).
 - **Ricettario**: 20 ricette di base per 10 regioni (Piemonte, Lombardia, Veneto, Liguria, Emilia-Romagna, Toscana, Lazio, Campania, Puglia, Sicilia), filtrabili per regione e tipo di piatto. Dosi che si adattano al numero di persone. Ogni ricetta si può **modificare** (con «Originale» per tornare indietro), segnare come **preferita**, e si possono **aggiungere ricette proprie**.
 - **Scansiona un foglio**: scatti o scegli una foto, il testo viene letto sul telefono (Tesseract, italiano, offline) e finisce nei campi della ricetta, da correggere. Funziona bene con testo stampato o in stampatello; il corsivo a mano viene letto male. La foto resta allegata alla ricetta.
 - **Strumenti**: conversioni (grammi, ml, tazze, cucchiai e °C/°F), timer multipli, tabella dei tempi di cottura.
@@ -27,7 +27,7 @@ npm run preview  # prova la build
 ```
 index.html        pagina e tre sezioni
 src/main.js       stato, schermate, schede, editor ricette, timer, conversioni
-src/data.js       ingredienti (stagioni, conservazione, abbinamenti)
+src/data.js, src/data2.js   ingredienti (stagioni, conservazione, abbinamenti)
 src/ricette.js    ricette e regioni
 src/art.js        illustrazioni SVG (verdure)  ·  src/art2.js  (formaggi, pasta, uova, pane…)
 src/ocr.js        lettura del testo dalle foto e divisione in titolo / ingredienti / passaggi

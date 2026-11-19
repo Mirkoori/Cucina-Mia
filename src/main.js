@@ -45,8 +45,9 @@ function saveDB(){
 function toast(msg){var t=$("#toast");t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true},2600)}
 
 /* ---------- ricette ---------- */
+function linkIng(r){r.ing=(r.ing||[]).map(function(i){if(i[3]||!i[2])return i;var id=matchIng(i[2]);return id?[i[0],i[1],i[2],id]:i});return r}
 function baseRecipes(){return RICETTE.map(function(r){return DB.over[r.id]?Object.assign({},DB.over[r.id],{id:r.id,orig:true,edited:true}):Object.assign({orig:true},r)})}
-function allRecipes(){return baseRecipes().concat(DB.mine.map(function(r){return Object.assign({},r,{user:true})}))}
+function allRecipes(){return baseRecipes().concat(DB.mine.map(function(r){return Object.assign({},r,{user:true})})).map(linkIng)}
 function getRecipe(id){return allRecipes().filter(function(r){return r.id===id})[0]}
 function isFav(id){return DB.fav.indexOf(id)>-1}
 function safeImg(s){return typeof s==="string"&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(s)?s:null}
@@ -75,11 +76,14 @@ function fmtAmt(a,u,f){
 }
 function stemOf(v){var w=v.n.toLowerCase().split(/[\s(]/)[0];return w.length<=5?w:w.slice(0,w.length-1)}
 var EXTRA={spaghetti:["spaghett","orecchiett","maccheron","trofie","penne","rigaton","tagliatell","bucatin","linguin","tonnarell"],zucca:["zucche"],acciughe:["acciug"],uova:["uovo","uova"]};
-var STEMS=V.map(function(v){return {id:v.id,k:[stemOf(v)].concat(EXTRA[v.id]||[])}});
+var STEMS=V.map(function(v){return {id:v.id,k:(v.k||[stemOf(v)]).concat(EXTRA[v.id]||[])}});
 function matchIng(name){
-  var words=String(name).toLowerCase().split(/[^a-zàèéìòù]+/).filter(Boolean),best=null,bl=0;
+  var norm=" "+String(name).toLowerCase().split(/[^a-zàèéìòù]+/).filter(Boolean).join(" "),best=null,bl=0;
   STEMS.forEach(function(s){s.k.forEach(function(k){
-    if(k.length>=bl&&k.length>=4&&words.some(function(w){return w.indexOf(k)===0})){best=s.id;bl=k.length}
+    if(k.length<3||k.length<bl)return;
+    var i=norm.indexOf(" "+k);if(i<0)return;
+    if(k.length===3){var e=norm.indexOf(" ",i+1);var w=norm.slice(i+1,e<0?undefined:e);if(w.length>4)return}
+    best=s.id;bl=k.length;
   })});
   return best;
 }

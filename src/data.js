@@ -1,9 +1,10 @@
+import { V2 } from "./data2.js";
 // Ingredienti: stagionalità indicativa per il Nord Italia (m = mesi di stagione; null = tutto l'anno).
 var MESI=["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
 var MES3=["Gen","Feb","Mar","Apr","Mag","Giu","Lug","Ago","Set","Ott","Nov","Dic"];
 var MES3L=["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"];
 var LET=["G","F","M","A","M","G","L","A","S","O","N","D"];
-var V=[
+var V1=[
 // ---- Verdure
 {id:"pomodoro",n:"Pomodoro",cat:"Verdure",bg:"#FFE066",kind:"tomato",col:{a:"#E8312F",g:"#2E8B3E"},m:[7,8,9,10],kcal:18,
  cons:"Maturi, fuori dal frigo e lontano dal sole, 3–5 giorni. In frigo perdono profumo: mettili solo se sono già molto maturi.",
@@ -49,11 +50,11 @@ var V=[
  cons:"In frigo, nel cassetto, 5–7 giorni.",
  abb:["speck","noci","gorgonzola","olio","aceto"],sost:["Cicoria","Cavolo cappuccio rosso"],
  tip:"Crudo è amarognolo: grigliato o stufato si addolcisce. Un pizzico di zucchero o un po’ di aceto bilancia."},
-{id:"cavolonero",n:"Cavolo nero",cat:"Verdure",bg:"#F9C74F",kind:"kale",col:{g:"#1D5A3A",w:"#7FD1A0"},m:[10,11,12,1,2,3],kcal:49,
+{id:"cavolonero",k:["cavolo nero"],n:"Cavolo nero",cat:"Verdure",bg:"#F9C74F",kind:"kale",col:{g:"#1D5A3A",w:"#7FD1A0"},m:[10,11,12,1,2,3],kcal:49,
  cons:"In frigo 4–5 giorni. Sbollentato si congela.",
  abb:["fagioli","aglio","pane","olio","patata"],sost:["Verza","Cavolo riccio"],
  tip:"Togli la costa dura centrale e cuoci a lungo: diventa tenero e saporito, ideale per zuppe."},
-{id:"cimedirapa",n:"Cime di rapa",cat:"Verdure",bg:"#FFD6A5",kind:"kale",col:{g:"#2E8A3E",w:"#C5E86A"},m:[11,12,1,2,3],kcal:22,
+{id:"cimedirapa",k:["cime di rapa","cime"],n:"Cime di rapa",cat:"Verdure",bg:"#FFD6A5",kind:"kale",col:{g:"#2E8A3E",w:"#C5E86A"},m:[11,12,1,2,3],kcal:22,
  cons:"In frigo 2–3 giorni: sono delicate. Sbollentate si congelano.",
  abb:["acciughe","aglio","peperoncino","orecchiette","olio"],sost:["Broccoli","Friarielli, se li trovi"],
  tip:"Usa cime e foglie tenere, scarta i gambi più grossi. Si cuociono nell’acqua della pasta, per risparmiare una pentola."},
@@ -61,16 +62,16 @@ var V=[
  cons:"In baccello, in frigo 2–3 giorni. Sgranati si congelano dopo una breve sbollentatura.",
  abb:["riso","menta","pancetta","burro","cipolla"],sost:["Piselli surgelati (ottimi fuori stagione)","Fave sgusciate"],
  tip:"Fuori stagione i piselli surgelati sono spesso migliori di quelli freschi vecchi di giorni."},
-{id:"sedano",n:"Sedano",cat:"Verdure",bg:"#C7F0A8",kind:"leafy",col:{g:"#7BC24A",g2:"#9AD966",w:"#E2F7C8",stem:"#A6DB77"},m:null,kcal:16,
+{id:"sedano",k:["sedan"],n:"Sedano",cat:"Verdure",bg:"#C7F0A8",kind:"leafy",col:{g:"#7BC24A",g2:"#9AD966",w:"#E2F7C8",stem:"#A6DB77"},m:null,kcal:16,
  cons:"In frigo, avvolto in un panno, 1–2 settimane. Le foglie si possono tritare e congelare.",
  abb:["carota","cipolla","pomodoro","prezzemolo","olio"],sost:["Sedano rapa","Finocchio (aroma diverso)"],
  tip:"Le foglie sono molto aromatiche: tritale nei soffritti e nelle salse, non buttarle."},
 // ---- Erbe
-{id:"basilico",n:"Basilico",cat:"Erbe",bg:"#9BE0C6",kind:"leafy",col:{g:"#2E9A3F",g2:"#4DB85A",w:"#B6EFB0",stem:"#2E9A3F"},m:[5,6,7,8,9],kcal:null,
+{id:"basilico",n:"Basilico",cat:"Erbe e spezie",bg:"#9BE0C6",kind:"leafy",col:{g:"#2E9A3F",g2:"#4DB85A",w:"#B6EFB0",stem:"#2E9A3F"},m:[5,6,7,8,9],kcal:null,
  cons:"Mai in frigo: soffre il freddo. A temperatura ambiente con i gambi in acqua, come un mazzo di fiori.",
  abb:["pomodoro","mozzarella","aglio","olio","pinoli"],sost:["Prezzemolo (sapore diverso)","Origano per cotture lunghe"],
  tip:"Aggiungilo a fine cottura e spezzalo con le mani: tagliato col coltello annerisce e perde profumo."},
-{id:"prezzemolo",n:"Prezzemolo",cat:"Erbe",bg:"#B8F0A0",kind:"leafy",col:{g:"#2E8F3A",g2:"#4FB056",w:"#A6E3A0",stem:"#2E8F3A"},m:null,kcal:null,
+{id:"prezzemolo",n:"Prezzemolo",cat:"Erbe e spezie",bg:"#B8F0A0",kind:"leafy",col:{g:"#2E8F3A",g2:"#4FB056",w:"#A6E3A0",stem:"#2E8F3A"},m:null,kcal:null,
  cons:"Gambi in un bicchiere d’acqua in frigo, oppure tritato e congelato.",
  abb:["aglio","limone","olio","pesce","patata"],sost:["Basilico","Erba cipollina"],
  tip:"I gambi hanno più sapore delle foglie: tritali fini nei soffritti e usa le foglie per guarnire."},
@@ -79,11 +80,11 @@ var V=[
  cons:"In frigo, nel contenitore, entro la data in confezione. Per le preparazioni a crudo usa uova freschissime e conservate bene.",
  abb:["parmigiano","pecorino","burro","farina","zucchero"],sost:["Nelle torte: yogurt o purea di mela (il risultato cambia)"],
  tip:"Per la carbonara il tuorlo si scioglie con il calore della pasta fuori dal fuoco: se lo scaldi troppo, si strapazza."},
-{id:"parmigiano",n:"Parmigiano Reggiano",cat:"Latticini e uova",bg:"#FFD166",kind:"cheese",col:{a:"#F6C94A",b:"#E1A82A"},m:null,kcal:392,
+{id:"parmigiano",k:["parmigian"],n:"Parmigiano Reggiano",cat:"Latticini e uova",bg:"#FFD166",kind:"cheese",col:{a:"#F6C94A",b:"#E1A82A"},m:null,kcal:392,
  cons:"In frigo, avvolto in carta per formaggi o pellicola. La crosta dà sapore a minestre e brodi: non buttarla.",
  abb:["burro","pasta","pomodoro","uova","zucca"],sost:["Grana Padano","Pecorino (più sapido)"],
  tip:"Grattugialo al momento: già grattugiato perde profumo. Non serve su tutte le paste: sul pesce no."},
-{id:"pecorino",n:"Pecorino",cat:"Latticini e uova",bg:"#F7E4B0",kind:"cheese",col:{a:"#FBF0CF",b:"#E8D08A"},m:null,kcal:387,
+{id:"pecorino",k:["pecorin"],n:"Pecorino",cat:"Latticini e uova",bg:"#F7E4B0",kind:"cheese",col:{a:"#FBF0CF",b:"#E8D08A"},m:null,kcal:387,
  cons:"In frigo, avvolto in carta per alimenti. Il pecorino stagionato dura settimane.",
  abb:["pepe nero","guanciale","uova","pasta","fave"],sost:["Parmigiano (più dolce, ne serve di più)","Grana"],
  tip:"È più sapido del Parmigiano: assaggia prima di salare."},
@@ -100,28 +101,28 @@ var V=[
  abb:["uova","zucchero","caffè","cacao","savoiardi"],sost:["Ricotta ben scolata (più leggera)"],
  tip:"Lavoralo poco e a freddo: se lo sbatti troppo si smonta."},
 // ---- Carne e pesce
-{id:"guanciale",n:"Guanciale",cat:"Carne e pesce",bg:"#FFB3A7",kind:"meat",col:{a:"#E58A8A",w:"#FFF0E8"},m:null,kcal:null,
+{id:"guanciale",n:"Guanciale",cat:"Carne",bg:"#FFB3A7",kind:"meat",col:{a:"#E58A8A",w:"#FFF0E8"},m:null,kcal:null,
  cons:"Intero in frigo, avvolto in carta, dura settimane; tagliato pochi giorni. Si può congelare a pezzi.",
  abb:["pecorino","uova","pepe nero","pomodoro","pasta"],sost:["Pancetta tesa (meno saporita)"],
  tip:"Tagliato a listarelle e cotto piano in padella fredda: il grasso si scioglie e le listarelle diventano croccanti fuori."},
-{id:"macinato",n:"Carne macinata",cat:"Carne e pesce",bg:"#FFC6A1",kind:"meat",col:{a:"#C94A4A",w:"#E88C8C"},m:null,kcal:null,
+{id:"macinato",k:["macinat"],n:"Carne macinata",cat:"Carne",bg:"#FFC6A1",kind:"meat",col:{a:"#C94A4A",w:"#E88C8C"},m:null,kcal:null,
  cons:"In frigo e da cuocere entro 1–2 giorni; si congela per qualche mese.",
  abb:["cipolla","carota","sedano","pomodoro","vino rosso"],sost:["Mix manzo e maiale per più sapore"],
  tip:"Per il ragù, non mescolare troppo all’inizio: lascia dorare bene prima di girare."},
-{id:"vitello",n:"Vitello (fettine)",cat:"Carne e pesce",bg:"#FFD3CC",kind:"meat",col:{a:"#F0A8A0",w:"#FFE8E3"},m:null,kcal:null,
+{id:"vitello",n:"Vitello (fettine)",cat:"Carne",bg:"#FFD3CC",kind:"meat",col:{a:"#F0A8A0",w:"#FFE8E3"},m:null,kcal:null,
  cons:"In frigo, da cuocere entro 2 giorni, oppure congelato.",
  abb:["burro","limone","uova","pangrattato","salvia"],sost:["Pollo o maiale in fettine","Tacchino"],
  tip:"Batti la carne a spessore uniforme: cuoce uguale e resta tenera."},
-{id:"acciughe",n:"Acciughe",cat:"Carne e pesce",bg:"#A9D7FF",kind:"fish",col:{a:"#7FA5C8",w:"#DCEBF5"},m:null,kcal:null,
+{id:"acciughe",n:"Acciughe",cat:"Pesce",bg:"#A9D7FF",kind:"fish",col:{a:"#7FA5C8",w:"#DCEBF5"},m:null,kcal:null,
  cons:"Sott’olio, dopo l’apertura in frigo, coperte d’olio, per circa una settimana.",
  abb:["aglio","peperoncino","cime di rapa","olio","pane"],sost:["Pasta d’acciughe","Capperi (per la sapidità)"],
  tip:"Sciolgile nell’olio caldo a fuoco basso: si sfanno e danno sapidità senza sapore di pesce."},
 // ---- Dispensa
-{id:"spaghetti",n:"Pasta secca",cat:"Dispensa",bg:"#FFE066",kind:"pasta",col:{a:"#F5C842"},m:null,kcal:353,
+{id:"spaghetti",k:["pasta","spaghett","orecchiett","maccheron","trofie","penne","rigaton","tagliatell","bucatin","linguin","tonnarell"],n:"Pasta secca",cat:"Dispensa",bg:"#FFE066",kind:"pasta",col:{a:"#F5C842"},m:null,kcal:353,
  cons:"In dispensa, in luogo asciutto: dura a lungo, controlla la scadenza in confezione.",
  abb:["pomodoro","olio","aglio","parmigiano","pecorino"],sost:["Pasta di altri formati: regola il tempo di cottura"],
  tip:"Acqua abbondante, sale solo a bollore, e scola 1–2 minuti prima: finisce di cuocere nel condimento."},
-{id:"riso",n:"Riso",cat:"Dispensa",bg:"#E0F0FF",kind:"sack",col:{a:"#F2EEE6",b:"#C9C2B2",w:"#FFFFFF"},m:null,kcal:332,
+{id:"riso",k:["riso"],n:"Riso",cat:"Dispensa",bg:"#E0F0FF",kind:"sack",col:{a:"#F2EEE6",b:"#C9C2B2",w:"#FFFFFF"},m:null,kcal:332,
  cons:"In dispensa, in contenitore chiuso, lontano da umidità e insetti.",
  abb:["burro","brodo","parmigiano","cipolla","zafferano"],sost:["Carnaroli e Vialone Nano per risotti","Basmati per contorni asciutti"],
  tip:"Per il risotto tosta il riso a secco un minuto prima del vino: i chicchi restano più sgranati."},
@@ -129,20 +130,21 @@ var V=[
  cons:"In dispensa in contenitore chiuso e asciutto: con l’umidità si rovina e attira insetti.",
  abb:["uova","burro","acqua","lievito","zucchero"],sost:["Tipo 00 per paste fresche e dolci","Tipo 0 e manitoba per pane e pizza"],
  tip:"Pesa sempre la farina: a tazze può variare di molto."},
-{id:"olio",n:"Olio extravergine",cat:"Dispensa",bg:"#D8F28A",kind:"bottle",col:{a:"#9BC53D",b:"#4E7A1F",w:"#FFF8D8"},m:null,kcal:899,
+{id:"olio",k:["olio"],n:"Olio extravergine",cat:"Dispensa",bg:"#D8F28A",kind:"bottle",col:{a:"#9BC53D",b:"#4E7A1F",w:"#FFF8D8"},m:null,kcal:899,
  cons:"Al buio e al fresco, ben chiuso: luce e caldo lo fanno irrancidire.",
  abb:["aglio","pomodoro","basilico","pane","peperoncino"],sost:["Per friggere: olio di semi di arachide o girasole alto oleico"],
  tip:"Usalo crudo a fine cottura per sentirne il profumo; per friggere conviene un olio con punto di fumo più alto."},
-{id:"pane",n:"Pane",cat:"Dispensa",bg:"#FFD9A0",kind:"bread",col:{a:"#E9B56B",b:"#B8793A"},m:null,kcal:275,
+{id:"pane",k:["pane","pani"],n:"Pane",cat:"Dispensa",bg:"#FFD9A0",kind:"bread",col:{a:"#E9B56B",b:"#B8793A"},m:null,kcal:275,
  cons:"Raffermo è ottimo per pappa al pomodoro e panzanella. Fresco si congela a fette.",
  abb:["pomodoro","olio","aglio","basilico","cipolla"],sost:["Pangrattato per le panature"],
  tip:"Non buttare il pane secco: bagnato e strizzato è la base di tante ricette povere."},
-{id:"pelati",n:"Pomodori pelati",cat:"Dispensa",bg:"#FFB3A0",kind:"can",col:{a:"#D9D9D9",b:"#A8A8A8",w:"#FFF1E8",g:"#E8312F"},m:null,kcal:null,
+{id:"pelati",k:["pelat","pomodori pelati","pomodoro pelato"],n:"Pomodori pelati",cat:"Dispensa",bg:"#FFB3A0",kind:"can",col:{a:"#D9D9D9",b:"#A8A8A8",w:"#FFF1E8",g:"#E8312F"},m:null,kcal:null,
  cons:"Aperti vanno in frigo in un contenitore di vetro, 3–4 giorni, non nella lattina.",
  abb:["basilico","aglio","olio","cipolla","origano"],sost:["Passata di pomodoro","Pomodori freschi maturi"],
  tip:"Spezzali con le mani o con la forchetta: sono più saporiti di quelli già passati."}
 ];
+var V=V1.concat(V2);
 var BY={};V.forEach(function(v){BY[v.id]=v});
-var CATS=["Tutti","Verdure","Erbe","Latticini e uova","Carne e pesce","Dispensa"];
+var CATS=["Tutti","Verdure","Frutta","Erbe e spezie","Latticini e uova","Carne","Pesce","Dispensa"];
 
 export { MESI, MES3, MES3L, LET, V, BY, CATS };
