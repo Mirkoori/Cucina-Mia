@@ -7,6 +7,7 @@ import { Preferences } from "@capacitor/preferences";
 import { Capacitor } from "@capacitor/core";
 import { Filesystem, Directory, Encoding } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
+import { initProdotti } from "./prodotti.js";
 import { art } from "./art.js";
 import { MESI, MES3, MES3L, LET, V, BY, CATS } from "./data.js";
 import { REGIONI, RC, TIPI, RICETTE } from "./ricette.js";
@@ -287,6 +288,7 @@ function toolsHTML(){
   '<section class="tool"><h3>Cosa posso cucinare</h3><p class="sub">Scrivi gli ingredienti che hai in casa: ti mostro le ricette che puoi fare, o quasi. Sale, olio e pepe li do per scontati.</p>'+
     '<label class="search"><input id="ckQ" type="search" placeholder="Es. patate, uova, zucchine…" autocomplete="off" aria-label="Cerca un ingrediente che hai"></label>'+
     '<div class="preset" id="ckSug"></div><div class="preset" id="ckSel"></div><div id="ckRes"></div></section>'+
+  prodApi.html()+
   '<section class="tool"><h3>I tuoi dati</h3><p class="sub">Preferite, ricette tue, modifiche e menu restano solo su questo telefono. Salva un file di backup per non perderli (cambio telefono, reinstallazione) e ricaricalo quando serve.</p>'+
     '<div class="actions"><button class="btn pri" data-act="export">Salva backup</button><button class="btn" data-act="import">Carica backup</button></div>'+
     '<input id="fileImp" type="file" accept=".json,application/json" hidden></section>';
@@ -690,6 +692,7 @@ document.addEventListener("change",function(e){
 window.addEventListener("hashchange",route);
 
 menuApi=initMenu({DB:DB,esc:esc,IC:IC,getRecipe:getRecipe,allRecipes:allRecipes,BY:BY,RC:RC,TIPI:TIPI,fmtAmt:fmtAmt,saveDB:saveDB,toast:toast});
+var prodApi=initProdotti({esc:esc,toast:toast,IC:IC,BY:BY,matchIng:matchIng,cookAdd:function(id){if(cookSel.indexOf(id)<0)cookSel.push(id);renderCook()}});
 loadDB().then(function(){
   route();
   var sh=parseShared();
