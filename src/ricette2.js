@@ -314,7 +314,23 @@ R("tigelle","Tigelle modenesi","Emilia-Romagna","Pane e pizze",120,6,2,["500 g|f
 R("scarpariello","Spaghetti scarpariello","Campania","Primi",25,4,1,["320 g|spaghetti","500 g|pomodorini","2|spicchi d’aglio","1 mazzetto|basilico","60 g|pecorino","q.b.|peperoncino"],
  ["Cuoci i pomodorini a fuoco vivace con aglio, olio e peperoncino finché si disfano.","Cuoci gli spaghetti molto al dente.","Termina la cottura nel sugo, poi unisci pecorino e basilico e manteca."]),
 R("pasta-zucca","Pasta e zucca","Campania","Primi",50,4,1,["300 g|zucca già pulita","200 g|pasta mista","1|cipolla","50 g|provola","1|rametto di rosmarino","50 g|parmigiano"],
- ["Soffriggi la cipolla e unisci la zucca a pezzi.","Aggiungi acqua e cuoci 15 minuti, schiacciando in parte la zucca.","Unisci la pasta e cuocila nella zuppa.","Finisci con provola a dadini e parmigiano."])
+ ["Soffriggi la cipolla e unisci la zucca a pezzi.","Aggiungi acqua e cuoci 15 minuti, schiacciando in parte la zucca.","Unisci la pasta e cuocila nella zuppa.","Finisci con provola a dadini e parmigiano."]),
+R("patate-forno","Patate al forno con rosmarino","Toscana","Antipasti e contorni",60,4,1,["1 kg|patate","3 cucchiai|olio extravergine","2|rametti di rosmarino","3|spicchi d’aglio","q.b.|sale"],
+ ["Sbuccia le patate e tagliale a pezzi regolari; sciacquale e asciugale bene.","Condiscile con olio, sale, rosmarino e aglio in camicia.","Disponi in una teglia in un solo strato.","Cuoci a 200 °C per 45–50 minuti, girandole a metà, finché sono dorate e croccanti."],"Asciugarle bene prima di condirle le rende più croccanti."),
+R("pure","Purè di patate","Lombardia","Antipasti e contorni",40,4,1,["800 g|patate","80 g|burro","150 ml|latte","40 g|parmigiano","q.b.|noce moscata","q.b.|sale"],
+ ["Lessa le patate con la buccia in acqua salata fino a quando sono morbide.","Sbucciale ancora calde e schiacciale con lo schiacciapatate.","Aggiungi burro, latte caldo, parmigiano, noce moscata e sale e mescola con una spatola finché è liscio."],"Non frullare le patate: diventano colla."),
+R("gatto-patate","Gattò di patate","Campania","Secondi",90,6,2,["1 kg|patate","100 g|salame napoletano o prosciutto cotto","200 g|provola","2|uova","60 g|parmigiano","50 g|burro","q.b.|pangrattato"],
+ ["Lessa le patate, schiacciale e mescola con uova, parmigiano, sale e pepe.","Imburra una teglia e cospargila di pangrattato; versa metà del composto.","Aggiungi salame e provola a pezzi e copri con il resto del composto.","Cospargi di pangrattato e fiocchetti di burro e cuoci a 190 °C per 40 minuti."]),
+R("crocche-patate","Crocchè di patate","Campania","Antipasti e contorni",60,6,2,["600 g|patate","2|uova","60 g|parmigiano","100 g|mozzarella o prosciutto cotto","q.b.|prezzemolo","q.b.|pangrattato","q.b.|olio di semi per friggere"],
+ ["Lessa le patate, schiacciale e mescola con un uovo, il parmigiano e il prezzemolo.","Forma dei cilindri con un pezzetto di mozzarella o prosciutto all’interno.","Passa in uovo sbattuto e pangrattato.","Friggi in olio caldo finché dorate."]),
+R("insalata-patate-fagiolini","Insalata di patate e fagiolini","Liguria","Antipasti e contorni",35,4,1,["500 g|patate","300 g|fagiolini","4 cucchiai|pesto o olio extravergine","1|cipollotto","q.b.|sale"],
+ ["Lessa le patate a pezzi e i fagiolini in acqua salata, separatamente.","Scolali e lasciali intiepidire.","Condisci con pesto diluito con un po’ d’acqua di cottura, oppure con olio, sale e cipollotto."]),
+R("tortino-patate-acciughe","Tortino di patate e acciughe","Liguria","Secondi",60,4,2,["800 g|patate","8|acciughe sott’olio","3 cucchiai|pangrattato","1|spicchio d’aglio","1 mazzetto|prezzemolo","4 cucchiai|olio extravergine"],
+ ["Affetta le patate sottili e lessale 5 minuti.","In una teglia oliata alterna strati di patate, acciughe a pezzetti, aglio e prezzemolo tritato.","Cospargi di pangrattato e olio.","Cuoci a 200 °C per 30 minuti, finché la superficie è dorata."]),
+R("frittata-patate","Frittata di patate","Lazio","Secondi",35,4,1,["500 g|patate","6|uova","1|cipolla","40 g|parmigiano","3 cucchiai|olio extravergine"],
+ ["Taglia le patate a fettine e cuocile in padella con la cipolla e l’olio finché sono tenere.","Sbatti le uova con parmigiano e sale e uniscile alle patate.","Cuoci coperta a fuoco basso, poi gira e finisci la cottura."]),
+R("patate-pizzaiola","Patate alla pizzaiola","Campania","Antipasti e contorni",45,4,1,["800 g|patate","400 g|pomodori pelati","2|spicchi d’aglio","1 cucchiaio|origano","q.b.|basilico","4 cucchiai|olio extravergine"],
+ ["Taglia le patate a spicchi.","Soffriggi l’aglio nell’olio, aggiungi i pelati e l’origano.","Unisci le patate e un po’ d’acqua e cuoci coperto per 30 minuti, finché sono tenere.","Servi con basilico."])
 
 ];
 export { RICETTE2, REGIONI2 };
