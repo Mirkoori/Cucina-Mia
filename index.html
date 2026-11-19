@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#8C2F1B">
+  <meta name="description" content="Cucina Mia: ingredienti di stagione, ricette italiane per regione, il tuo ricettario personale e gli strumenti di cucina.">
+  <title>Cucina Mia: Ingredienti e Ricette</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-5Z"/><path d="M2 11h20"/><path d="M9 7c0-1.5 1.5-1.5 1.5-3M14 7c0-1.5 1.5-1.5 1.5-3"/></svg></span>cucina mia</div>
+    <span class="region"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>Nord Italia</span>
+  </header>
+
+  <main>
+    <!-- INGREDIENTI -->
+    <section id="v-ingredienti" class="view" aria-label="Ingredienti">
+      <div class="hero">
+        <span class="eyebrow">Di stagione a</span>
+        <h1 id="monthName">Novembre</h1>
+        <p id="heroSub"></p>
+        <div class="collage" id="collage" aria-hidden="true"></div>
+      </div>
+      <div class="months" id="months" role="tablist" aria-label="Mese"></div>
+      <div class="seg" id="seg" role="group" aria-label="Mostra"></div>
+      <label class="search">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+        <input id="q" type="search" placeholder="Cerca un ingrediente" autocomplete="off" aria-label="Cerca un ingrediente">
+      </label>
+      <div class="chips" id="cats" role="group" aria-label="Categoria"></div>
+      <div class="count" id="count"></div>
+      <div class="grid" id="grid"></div>
+      <p class="foot">Le stagionalità sono indicative per il Nord Italia. Gli ingredienti «sempre» sono quelli che trovi tutto l’anno.</p>
+    </section>
+
+    <!-- RICETTARIO -->
+    <section id="v-ricettario" class="view" aria-label="Ricettario" hidden>
+      <div class="vh"><h2>Il ricettario</h2></div>
+      <div class="actions">
+        <button class="btn pri" data-act="new">Nuova ricetta</button>
+        <button class="btn" data-act="scan">Scansiona un foglio</button>
+      </div>
+      <div class="seg" id="rseg" role="group" aria-label="Mostra"></div>
+      <label class="search">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+        <input id="rq" type="search" placeholder="Cerca ricetta o ingrediente" autocomplete="off" aria-label="Cerca ricetta o ingrediente">
+      </label>
+      <div class="chips" id="rreg" role="group" aria-label="Regione"></div>
+      <div class="chips" id="rtipo" role="group" aria-label="Tipo di piatto"></div>
+      <div class="count" id="rcount"></div>
+      <div class="rlist" id="rlist"></div>
+      <p class="foot">Le ricette sono scritte per Cucina Mia. Le dosi sono indicative: assaggia e regola. Puoi modificare ogni ricetta e aggiungere le tue: restano sul tuo telefono.</p>
+    </section>
+
+    <!-- STRUMENTI -->
+    <section id="v-strumenti" class="view" aria-label="Strumenti" hidden>
+      <div class="vh"><h2>Strumenti</h2></div>
+      <div id="tools"></div>
+    </section>
+  </main>
+</div>
+
+<nav class="tabbar" aria-label="Sezioni">
+  <div class="tabs">
+    <a class="tab" href="#ingredienti" data-tab="ingredienti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19C5 10 10 5 19 5c0 9-5 14-14 14Z"/><path d="M5 19 14 10"/></svg>Ingredienti</a>
+    <a class="tab" href="#ricettario" data-tab="ricettario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5Z"/><path d="M12 6.5V19.5"/></svg>Ricettario</a>
+    <a class="tab" href="#strumenti" data-tab="strumenti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 3h6"/></svg>Strumenti</a>
+  </div>
+</nav>
+
+<div id="sheetRoot"></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
