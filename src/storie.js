@@ -40,4 +40,6 @@ export var STORIE={
 "sbrisolona":"Il nome viene da «sbriciolare»: la torta si rompe in pezzi e si mangia spezzandola a mano. È tradizionale di Mantova e della Lombardia orientale.",
 "zeppole":"Si preparano per la festa di San Giuseppe, il 19 marzo, in Campania e in tutta l’Italia meridionale. Sono associate alla festa del papà in Italia.",
 "baccala-vicentina":"A Vicenza il piatto è custodito dalla Venerabile Confraternita del Baccalà alla Vicentina. Come in tutto il Veneto, si usa lo stoccafisso (chiamato «baccalà»), non il merluzzo salato."
+,"focaccia-recco":"La focaccia di Recco col formaggio è un prodotto tipico ligure con il marchio IGP. È una sfoglia sottilissima farcita con stracchino (crescenza), cotta in forno molto caldo.",
+"goulash-triestino":"Il goulash è arrivato a Trieste dalla cucina ungherese, ai tempi dell’impero austro-ungarico, ed è diventato un piatto tipico della città."
 };
