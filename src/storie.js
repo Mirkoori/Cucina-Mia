@@ -33,4 +33,11 @@ export var STORIE={
 ,"puttanesca":"L’origine del nome è discussa e probabilmente popolare: si dice sia nato a Napoli o a Ischia negli anni Cinquanta, ma non ci sono prove certe. Il piatto usa ingredienti che si trovano sempre in dispensa, per questo è nato come cucina veloce.",
 "suppli":"Si chiamano «supplì al telefono» per il filo di mozzarella che si allunga quando li si morde, simile al filo di una cornetta. Sono tipici di Roma, dove si mangiano come cibo da strada.",
 "cannoli":"Il cannolo è associato al Carnevale siciliano. Una leggenda lo fa nascere in un harem di Caltanissetta in epoca araba, ma sono racconti popolari più che fatti documentati."
+,"pastiera":"È il dolce pasquale di Napoli. Una leggenda lo collega alla sirena Partenope, che ogni primavera sarebbe stata ringraziata dai napoletani con doni di ricotta, grano, uova e fiori d’arancio, poi mescolati da una mano esperta. È una storia affascinante più che documentata.",
+"baba":"Il babà arrivò a Napoli nel Settecento o nell’Ottocento, forse portato dai cuochi francesi (i «monsù»). Secondo un’altra tradizione l’idea nasce in Polonia, dove un re avrebbe bagnato un dolce secco con il vino. Le versioni non sono certe.",
+"pasta-genovese":"Nonostante il nome non è un piatto di Genova ma di Napoli. Le spiegazioni sul nome sono diverse: una dice che nasca da cuochi o commercianti genovesi a Napoli, ma non è sicuro.",
+"torta-caprese":"Una storia divertente dice che la torta caprese sia nata per errore, quando un pasticcere dimenticò la farina nell’impasto con cioccolato e mandorle. Come per molte leggende non ci sono documenti che lo provino.",
+"sbrisolona":"Il nome viene da «sbriciolare»: la torta si rompe in pezzi e si mangia spezzandola a mano. È tradizionale di Mantova e della Lombardia orientale.",
+"zeppole":"Si preparano per la festa di San Giuseppe, il 19 marzo, in Campania e in tutta l’Italia meridionale. Sono associate alla festa del papà in Italia.",
+"baccala-vicentina":"A Vicenza il piatto è custodito dalla Venerabile Confraternita del Baccalà alla Vicentina. Come in tutto il Veneto, si usa lo stoccafisso (chiamato «baccalà»), non il merluzzo salato."
 };
