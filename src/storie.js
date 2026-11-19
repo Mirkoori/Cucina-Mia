@@ -42,4 +42,7 @@ export var STORIE={
 "baccala-vicentina":"A Vicenza il piatto è custodito dalla Venerabile Confraternita del Baccalà alla Vicentina. Come in tutto il Veneto, si usa lo stoccafisso (chiamato «baccalà»), non il merluzzo salato."
 ,"focaccia-recco":"La focaccia di Recco col formaggio è un prodotto tipico ligure con il marchio IGP. È una sfoglia sottilissima farcita con stracchino (crescenza), cotta in forno molto caldo.",
 "goulash-triestino":"Il goulash è arrivato a Trieste dalla cucina ungherese, ai tempi dell’impero austro-ungarico, ed è diventato un piatto tipico della città."
+,"erbazzone":"L’erbazzone è un cibo contadino dell’Appennino reggiano: nato per usare erbe di campo e bietole, era un piatto povero e saziante, con lardo o pancetta e formaggio.",
+"torta-pasqualina":"La torta pasqualina è una torta di Pasqua ligure. La tradizione vuole che la sfoglia avesse molti strati sottilissimi e che le uova intere rimanessero al centro del ripieno.",
+"casatiello":"Il casatiello è il pane rustico farcito della Pasqua napoletana. Le uova intere fissate sul bordo con croci di pasta sono il segno del periodo."
 };
