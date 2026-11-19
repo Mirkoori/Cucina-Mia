@@ -7,6 +7,7 @@ import { Preferences } from "@capacitor/preferences";
 import { art } from "./art.js";
 import { MESI, MES3, MES3L, LET, V, BY, CATS } from "./data.js";
 import { REGIONI, RC, TIPI, RICETTE } from "./ricette.js";
+import { initMenu } from "./menu.js";
 import { leggiFoto, dividiTesto } from "./ocr.js";
 
 var NOW=new Date(), NOW_M=NOW.getMonth()+1;
@@ -29,13 +30,13 @@ var state={month:NOW_M,seg:"stagione",cat:"Tutti",q:"",
   rseg:"regioni",rreg:"Tutte",rtipo:"Tutte",rq:"",
   sheet:null,stack:[],edit:null};
 var STORE_KEY="cucinamia-dati";
-var DB={fav:[],mine:[],over:{}};
+var DB={fav:[],mine:[],over:{},menus:[]};
 var lastFocus=null, toastT=null;
 async function loadDB(){
   var raw=null;
   try{raw=(await Preferences.get({key:STORE_KEY})).value}catch(e){}
   if(!raw){try{raw=localStorage.getItem(STORE_KEY)}catch(e){}}
-  try{var d=JSON.parse(raw);if(d&&typeof d==="object"){DB.fav=Array.isArray(d.fav)?d.fav:[];DB.mine=Array.isArray(d.mine)?d.mine:[];DB.over=d.over&&typeof d.over==="object"?d.over:{}}}catch(e){}
+  try{var d=JSON.parse(raw);if(d&&typeof d==="object"){DB.fav=Array.isArray(d.fav)?d.fav:[];DB.mine=Array.isArray(d.mine)?d.mine:[];DB.over=d.over&&typeof d.over==="object"?d.over:{};DB.menus=Array.isArray(d.menus)?d.menus.filter(function(m){return m&&typeof m.id==="string"&&Array.isArray(m.rec)}).map(function(m){return {id:m.id,n:String(m.n||"Menu"),pers:+m.pers||4,rec:m.rec,done:m.done&&typeof m.done==="object"?m.done:{}}}):[]}}catch(e){}
 }
 function saveDB(){
   var s=JSON.stringify(DB);
@@ -477,7 +478,8 @@ async function scanFile(file){
 }
 
 /* ---------- navigazione ---------- */
-var VIEWS=["ingredienti","ricettario","strumenti"];
+var VIEWS=["ingredienti","ricettario","menu","strumenti"];
+var menuApi=null;
 function currentView(){var h=location.hash.slice(1);return VIEWS.indexOf(h)<0?"ingredienti":h}
 function route(){
   var h=currentView();
@@ -485,6 +487,7 @@ function route(){
   document.querySelectorAll(".tab").forEach(function(a){if(a.dataset.tab===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(h==="ingredienti")renderIngredienti();
   if(h==="ricettario")renderRicettario();
+  if(h==="menu"&&menuApi)menuApi.render();
   if(h==="strumenti")renderStrumenti();
   window.scrollTo(0,0);
 }
@@ -551,4 +554,5 @@ document.addEventListener("change",function(e){
 });
 window.addEventListener("hashchange",route);
 
+menuApi=initMenu({DB:DB,esc:esc,IC:IC,getRecipe:getRecipe,allRecipes:allRecipes,BY:BY,RC:RC,TIPI:TIPI,fmtAmt:fmtAmt,saveDB:saveDB,toast:toast});
 loadDB().then(route);
