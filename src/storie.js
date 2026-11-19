@@ -29,4 +29,5 @@ export var STORIE={
 "risi-bisi":"È associato alla Repubblica di Venezia: si dice che venisse servito al doge il giorno di San Marco, il 25 aprile, quando arrivano i primi piselli freschi.",
 "polenta-fritta":"La polenta esisteva già prima dell’arrivo del mais, fatta con farro, orzo e altri cereali. Il mais, arrivato dalle Americhe dopo il 1492, si diffuse nel Nord Italia tra Cinquecento e Seicento e diventò la polenta gialla che conosciamo.",
 "arrosticini":"Sono legati alla tradizione dei pastori abruzzesi, che cuocevano piccoli pezzi di carne di pecora su spiedini sottili sulla brace."
+,"torta-barozzi":"Fu creata a Vignola, vicino a Modena, dal pasticcere Eugenio Gollini nel 1886 e all’inizio si chiamava «torta nera». Nel 1907, per i quattrocento anni dalla nascita dell’architetto vignolese Jacopo Barozzi, prese il nome di Barozzi. La ricetta originale è segreta e custodita dai discendenti: quella qui sotto è solo un’imitazione casalinga."
 };
