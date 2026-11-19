@@ -2,7 +2,7 @@
 var CATORD=["Verdure","Frutta","Carne","Pesce","Latticini e uova","Dispensa","Erbe e spezie","Altro"];
 export function initMenu(c){
   var DB=c.DB,esc=c.esc,IC=c.IC;
-  var cur=null,pick=false,q="",tipo="Tutte",tab="ricette";
+  var cur=null,pick=false,naming=false,q="",tipo="Tutte",tab="ricette";
   var SUG=["Cena di Natale","Pranzo della domenica","Cena tra amici"];
   function root(){return document.getElementById("menuRoot")}
   function getM(id){return DB.menus.filter(function(m){return m.id===id})[0]}
@@ -41,7 +41,7 @@ export function initMenu(c){
   }
   function renderList(){
     var h=head("I tuoi menu");
-    h+='<div class="mnew"><input id="mName" type="text" maxlength="40" placeholder="Nome del menu (es. Cena di Natale)" aria-label="Nome del menu"><button class="btn pri" data-act="m-new">Crea</button></div>';
+    h+='<div class="actions mact"><button class="btn pri" data-act="m-start">Crea un nuovo menu</button></div>';
     if(!DB.menus.length){
       h+='<div class="empty"><b>Nessun menu</b>Crea un menu, scegli le ricette e ottieni la lista della spesa già pronta.<div class="chips mchips">'+SUG.map(function(s){return '<button class="chip" data-act="m-new" data-n="'+esc(s)+'">'+esc(s)+'</button>'}).join("")+'</div></div>';
     }else{
@@ -103,8 +103,16 @@ export function initMenu(c){
     }
     root().innerHTML=h;
   }
+  function renderNaming(){
+    var h=head("Nuovo menu",true);
+    h+='<p class="lbl">Come lo chiami?</p><div class="mnew"><input id="mName" type="text" maxlength="40" placeholder="Es. Cena di Natale" aria-label="Nome del menu" autocomplete="off"><button class="btn pri" data-act="m-new">Crea</button></div>';
+    h+='<div class="chips mchips">'+SUG.map(function(x){return '<button class="chip" data-act="m-sug" data-n="'+esc(x)+'">'+esc(x)+'</button>'}).join("")+'</div>';
+    root().innerHTML=h;
+    var el=document.getElementById("mName");if(el)el.focus();
+  }
   function render(){
     if(!root())return;
+    if(naming&&!cur){renderNaming();return}
     var m=cur?getM(cur):null;
     if(!m){cur=null;pick=false;renderList();return}
     if(pick)renderPick(m);else renderDetail(m);
@@ -118,13 +126,15 @@ export function initMenu(c){
     var t=e.target.closest("[data-act]");if(!t)return;
     var a=t.dataset.act;if(a.slice(0,2)!=="m-")return;
     var m=cur?getM(cur):null,id=t.dataset.id;
+    if(a==="m-start"){naming=true;render();return}
+    if(a==="m-sug"){var inp=document.getElementById("mName");if(inp){inp.value=t.dataset.n;inp.focus()}return}
     if(a==="m-new"){
       var el=document.getElementById("mName"),n=(t.dataset.n||(el&&el.value)||"").trim();
       if(!n){toast("Scrivi un nome per il menu");return}
-      var nm={id:newId(),n:n,pers:4,rec:[],done:{}};DB.menus.unshift(nm);c.saveDB();cur=nm.id;tab="ricette";pick=true;q="";tipo="Tutte";render();window.scrollTo(0,0);return;
+      naming=false;var nm={id:newId(),n:n,pers:4,rec:[],done:{}};DB.menus.unshift(nm);c.saveDB();cur=nm.id;tab="ricette";pick=true;q="";tipo="Tutte";render();window.scrollTo(0,0);return;
     }
     if(a==="m-open"){cur=id;tab="ricette";pick=false;render();window.scrollTo(0,0);return}
-    if(a==="m-back"){cur=null;pick=false;render();return}
+    if(a==="m-back"){cur=null;pick=false;naming=false;render();return}
     if(!m)return;
     if(a==="m-pers"){m.pers=Math.max(1,Math.min(50,m.pers+(+t.dataset.d)));c.saveDB();render()}
     else if(a==="m-tab"){tab=t.dataset.k;render()}
