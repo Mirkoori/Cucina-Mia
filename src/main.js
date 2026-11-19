@@ -128,15 +128,17 @@ function rangeText(arr){
 }
 function seasonBar(v,mo){var s='<span class="sb" aria-hidden="true">';for(var i=1;i<=12;i++){s+='<i class="'+((!v.m||v.m.indexOf(i)>-1)?"on":"")+(i===mo?" cur":"")+'"></i>'}return s+"</span>"}
 function filtered(){
-  var m=state.month,q=state.q.trim().toLowerCase();
+  var m=state.month,q=foldQ(state.q);
   return V.filter(function(v){
     if(state.seg==="stagione"&&!(v.m&&v.m.indexOf(m)>-1))return false;
     if(state.seg==="sempre"&&v.m)return false;
     if(state.cat!=="Tutti"&&v.cat!==state.cat)return false;
-    if(q&&v.n.toLowerCase().indexOf(q)<0)return false;
+    if(q&&foldHay(v.n+" "+(v.k||[]).join(" ")).indexOf(q)<0)return false;
     return true;
   }).sort(function(a,b){return a.n.localeCompare(b.n,"it")});
 }
+function foldQ(x){var q=String(x).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();return q.length>=5?q.replace(/[aeio]$/,""):q}
+function foldHay(x){return String(x).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 function card(v,i){
   var m=state.month,tag=v.m&&v.m.indexOf(m)>-1?"Di stagione":"";
   var rot=[-5,4,-3,6,-6,3][i%6];
@@ -171,7 +173,7 @@ function renderIngredienti(){
 
 /* ---------- RICETTARIO ---------- */
 function recipesFor(){
-  var q=state.rq.trim().toLowerCase(),L=allRecipes();
+  var q=foldQ(state.rq),L=allRecipes();
   L=L.filter(function(r){
     if(state.rseg==="regioni"&&!r.orig)return false;
     if(state.rseg==="preferite"&&!isFav(r.id))return false;
@@ -179,7 +181,7 @@ function recipesFor(){
     if(state.rseg==="regioni"&&state.rreg!=="Tutte"&&r.reg!==state.rreg)return false;
     if(state.rtipo!=="Tutte"&&r.tipo!==state.rtipo)return false;
     if(q){
-      var hay=(r.n+" "+(r.reg||"")+" "+r.ing.map(function(i){return i[2]}).join(" ")).toLowerCase();
+      var hay=foldHay(r.n+" "+(r.reg||"")+" "+r.ing.map(function(i){return i[2]}).join(" "));
       if(hay.indexOf(q)<0)return false;
     }
     return true;
@@ -339,6 +341,7 @@ function renderCookSug(){
   var el=$("#ckSug"),inp=$("#ckQ");if(!el||!inp)return;
   var q=foldTxt(inp.value.trim());
   if(!q){el.innerHTML="";return}
+  if(q.length>=5)q=q.replace(/[aeio]$/,"");
   var L=V.filter(function(v){return cookSel.indexOf(v.id)<0&&(foldTxt(v.n).indexOf(q)>-1||(v.k||[]).some(function(k){return foldTxt(k).indexOf(q)>-1}))}).slice(0,8);
   el.innerHTML=L.length?L.map(function(v){return '<button class="chip" data-act="ckadd" data-id="'+v.id+'">+ '+esc(v.n)+'</button>'}).join(""):'<p class="note" style="margin:0">Nessun ingrediente trovato.</p>';
 }
