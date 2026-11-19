@@ -1,0 +1,147 @@
+// Altre ricette, scritte per Cucina Mia. Dosi indicative: assaggia e regola.
+// ing: "320 g|spaghetti" (quantità e unità | nome); "q.b.|sale"; "2|uova"
+function P(s){var a=s.split("|"),q=a[0].trim(),n=a[1].trim();
+  if(/^q\.?b/i.test(q))return[null,"",n];
+  var m=q.match(/^([\d.,]+)\s*(.*)$/);var x=parseFloat(m[1].replace(",","."));return[x,m[2],n]}
+function R(id,n,reg,tipo,min,pers,dif,ing,steps,note){return{id:id,n:n,reg:reg,tipo:tipo,min:min,pers:pers,dif:dif,ing:ing.map(P),steps:steps,note:note||null}}
+var REGIONI2=[
+ {k:"Trentino-Alto Adige",c:"#9BE0C6"},{k:"Friuli-Venezia Giulia",c:"#FFB7A8"},{k:"Valle d’Aosta",c:"#D8C7FF"},
+ {k:"Umbria",c:"#BDEFC0"},{k:"Abruzzo",c:"#FFC6A1"},{k:"Calabria",c:"#FFB3C6"},{k:"Sardegna",c:"#6FD0E0"}
+];
+var RICETTE2=[
+// ---- Piemonte
+R("vitello-tonnato","Vitello tonnato","Piemonte","Secondi",90,6,2,["800 g|girello di vitello","1|carota","1|costa di sedano","1|cipolla","1|foglia di alloro","160 g|tonno sott’olio","3|acciughe sott’olio","2 cucchiai|capperi","150 g|maionese","1|limone"],
+ ["Lessa il vitello in acqua con carota, sedano, cipolla e alloro per circa 1 ora, poi lascialo raffreddare nel suo brodo.","Frulla il tonno scolato con le acciughe, i capperi, la maionese e il succo di mezzo limone, aggiungendo qualche cucchiaio di brodo fino a una salsa liscia.","Affetta il vitello molto sottile, disponilo in un piatto e coprilo con la salsa.","Fai riposare in frigo almeno 2 ore e decora con altri capperi."],"Si prepara il giorno prima: è più buono a freddo."),
+R("bagna-cauda","Bagna cauda","Piemonte","Antipasti e contorni",40,4,2,["8|spicchi d’aglio","100 g|acciughe sotto sale","150 ml|olio extravergine","30 g|burro","q.b.|verdure crude e cotte da intingere"],
+ ["Sbuccia l’aglio, tagliatelo a fettine e fallo ammorbidire nell’olio a fuoco bassissimo senza farlo dorare.","Aggiungi le acciughe pulite e dissalate e mescola finché si sciolgono.","Unisci il burro e porta in tavola in un tegamino sul fornelletto.","Servi con cardi, peperoni, topinambur, cavolo e pane da intingere."],"L’aglio non deve friggere, altrimenti la salsa diventa amara."),
+R("bunet","Bunet","Piemonte","Dolci",70,6,2,["4|uova","80 g|zucchero","500 ml|latte","30 g|cacao amaro","8|amaretti","120 g|zucchero per il caramello"],
+ ["Fai il caramello con 120 g di zucchero e un goccio d’acqua e versalo in uno stampo da plumcake.","Sbatti le uova con lo zucchero, aggiungi il cacao, il latte e gli amaretti sbriciolati.","Versa nello stampo e cuoci a bagnomaria in forno a 160 °C per circa 50 minuti.","Lascia raffreddare e sforma dopo qualche ora in frigo."]),
+// ---- Lombardia
+R("ossobuco","Ossobuco alla milanese","Lombardia","Secondi",150,4,2,["4|ossibuchi di vitello","40 g|burro","1|cipolla","100 ml|vino bianco","300 ml|brodo","2 cucchiai|farina","1|limone","1 mazzetto|prezzemolo","1|spicchio d’aglio"],
+ ["Incidi il bordo degli ossibuchi, infarinali e rosolali nel burro con la cipolla tritata.","Sfuma con il vino, aggiungi il brodo caldo e cuoci coperto a fuoco basso per circa 1 ora e mezza.","Prepara la gremolata tritando prezzemolo, aglio e scorza di limone.","Servi con la gremolata sopra e il sugo di cottura."],"Classico con il risotto alla milanese."),
+R("minestrone","Minestrone di verdure","Lombardia","Primi",75,4,1,["2|carote","2|patate","2|zucchine","1|costa di sedano","1|cipolla","200 g|fagioli borlotti cotti","200 g|pomodori pelati","80 g|pasta o riso","q.b.|parmigiano"],
+ ["Taglia le verdure a dadini e soffriggi cipolla e sedano in poco olio.","Aggiungi le altre verdure, i fagioli e i pomodori, copri d’acqua e cuoci 40 minuti.","Unisci la pasta o il riso e cuoci finché è al dente.","Servi con un filo d’olio e parmigiano."]),
+R("risotto-funghi","Risotto ai funghi","Lombardia","Primi",40,4,2,["320 g|riso carnaroli","300 g|funghi champignon o porcini","1|scalogno","50 ml|vino bianco","1 l|brodo caldo","40 g|burro","40 g|parmigiano grattugiato","1 mazzetto|prezzemolo"],
+ ["Rosola i funghi a fette in padella con aglio e olio, poi tienili da parte.","Soffriggi lo scalogno nel burro, tosta il riso, sfuma con il vino.","Aggiungi il brodo un mestolo alla volta per circa 16 minuti, unendo i funghi a metà cottura.","Manteca fuori dal fuoco con burro e parmigiano e aggiungi il prezzemolo."]),
+R("torta-paradiso","Torta Paradiso","Lombardia","Dolci",60,8,1,["200 g|burro morbido","200 g|zucchero","3|uova","3|tuorli","150 g|amido di mais","100 g|farina","1 bustina|lievito chimico","1|limone"],
+ ["Monta il burro con lo zucchero fino a un composto chiaro.","Aggiungi uova e tuorli uno alla volta, poi la scorza di limone.","Incorpora farina, amido e lievito setacciati.","Versa in uno stampo imburrato e cuoci a 170 °C per 45 minuti."]),
+// ---- Veneto
+R("pasta-fagioli","Pasta e fagioli","Veneto","Primi",90,4,1,["250 g|fagioli borlotti cotti","1|cipolla","1|carota","1|costa di sedano","100 g|pancetta","1 l|brodo","150 g|pasta corta","1|rametto di rosmarino"],
+ ["Soffriggi pancetta, cipolla, carota e sedano tritati in poco olio.","Aggiungi i fagioli, il rosmarino e il brodo e cuoci 40 minuti.","Frulla un mestolo di fagioli e rimettilo in pentola per rendere la zuppa cremosa.","Cuoci la pasta direttamente nella zuppa e servi con un filo d’olio."]),
+R("fegato-veneziana","Fegato alla veneziana","Veneto","Secondi",35,4,2,["500 g|fegato di vitello","600 g|cipolle bianche","3 cucchiai|olio extravergine","1 noce|burro","1 mazzetto|prezzemolo","q.b.|sale e pepe"],
+ ["Affetta le cipolle sottilissime e cuocile lentamente con olio e burro e un goccio d’acqua per 25 minuti, finché sono cremose.","Taglia il fegato a striscioline e uniscilo alle cipolle a fuoco vivo per 3–4 minuti.","Sala alla fine, aggiungi prezzemolo e pepe.","Servi con polenta."],"Sala il fegato solo a fine cottura: altrimenti si indurisce."),
+R("sarde-saor","Sarde in saor","Veneto","Antipasti e contorni",50,4,2,["500 g|sarde fresche","2|cipolle bianche","80 ml|aceto di vino","30 g|uvetta","30 g|pinoli","q.b.|farina","q.b.|olio di semi per friggere"],
+ ["Pulisci le sarde, infarinale e friggile in olio caldo, poi scolale su carta.","Affetta le cipolle e cuocile in padella con olio finché sono morbide, poi aggiungi aceto, uvetta e pinoli.","Alterna in un contenitore strati di sarde e cipolle, finendo con le cipolle.","Lascia riposare in frigo almeno 24 ore prima di servire."],"Più riposa, più è buono."),
+R("baccala-mantecato","Baccalà mantecato","Veneto","Antipasti e contorni",60,6,2,["500 g|baccalà già ammollato","300 ml|olio extravergine","1|spicchio d’aglio","1|foglia di alloro","250 ml|latte","q.b.|prezzemolo","q.b.|polenta o pane tostato"],
+ ["Cuoci il baccalà in latte con alloro e aglio per circa 30 minuti.","Scolalo, elimina pelle e spine e lavoralo con una frusta o una spatola.","Aggiungi l’olio a filo, lavorando finché diventa una crema spumosa.","Servi tiepido su crostini o polenta con prezzemolo."]),
+R("gnocchi-patate","Gnocchi di patate","Veneto","Primi",60,4,2,["1 kg|patate","250 g|farina","1|uovo","q.b.|sale","q.b.|burro e salvia"],
+ ["Lessa le patate con la buccia, pelale calde e schiacciale.","Impasta con farina, uovo e sale senza lavorare troppo.","Forma dei cordoncini, taglia a tocchetti e passa i denti di una forchetta.","Cuoci in acqua bollente finché salgono a galla e condisci con burro e salvia."],"Meno farina usi, più sono morbidi."),
+// ---- Liguria
+R("farinata","Farinata di ceci","Liguria","Pane e pizze",60,4,1,["250 g|farina di ceci","600 ml|acqua","5 cucchiai|olio extravergine","1 cucchiaino|sale","q.b.|pepe nero"],
+ ["Sciogli la farina nell’acqua con una frusta e lascia riposare 2–4 ore, togliendo la schiuma.","Aggiungi sale e 2 cucchiai d’olio.","Scalda una teglia larga con l’olio rimasto e versa la pastella a spessore sottile.","Cuoci a 250 °C per 12–15 minuti, finché è dorata, e servi con abbondante pepe."]),
+R("minestrone-genovese","Minestrone alla genovese","Liguria","Primi",80,4,1,["2|patate","2|zucchine","200 g|fagiolini","200 g|fagioli borlotti cotti","1|cipolla","1|carota","80 g|pasta corta","3 cucchiai|pesto"],
+ ["Taglia le verdure a pezzetti e fai appassire cipolla e carota.","Aggiungi patate, zucchine, fagiolini, fagioli e acqua e cuoci per 45 minuti.","Unisci la pasta e cuoci al dente.","Spegni e servi con un cucchiaio di pesto in ogni piatto."]),
+// ---- Emilia-Romagna
+R("lasagne","Lasagne alla bolognese","Emilia-Romagna","Primi",120,8,3,["500 g|ragù alla bolognese","250 g|sfoglia o lasagne fresche","500 ml|latte","40 g|burro","40 g|farina","100 g|parmigiano","q.b.|noce moscata"],
+ ["Prepara la besciamella: sciogli il burro, unisci la farina, poi il latte caldo, noce moscata e sale, mescolando 8 minuti.","Cuoci le sfoglie 1 minuto in acqua bollente e asciugale.","In una pirofila alterna sfoglie, ragù, besciamella e parmigiano per 5–6 strati.","Cuoci a 180 °C per 30–35 minuti, finché la superficie è dorata."]),
+R("tortellini-brodo","Tortellini in brodo","Emilia-Romagna","Primi",40,4,1,["300 g|tortellini freschi","1.5 l|brodo di carne","q.b.|parmigiano"],
+ ["Porta il brodo a bollore.","Aggiungi i tortellini e cuocili 3–5 minuti finché salgono a galla.","Servi caldi con parmigiano grattugiato."],"Il brodo deve essere buono: di carne mista, filtrato."),
+R("gnocco-fritto","Gnocco fritto","Emilia-Romagna","Pane e pizze",60,4,2,["500 g|farina","150 ml|latte","100 ml|acqua","20 g|lievito di birra","50 g|strutto o olio","1 cucchiaino|sale","q.b.|olio di semi per friggere"],
+ ["Sciogli il lievito nel latte tiepido e impasta con farina, acqua, grasso e sale.","Lascia riposare 1 ora, poi stendi la pasta e taglia dei rombi.","Friggi in olio caldo finché gonfi e dorati.","Servi caldi con salumi e formaggi."]),
+R("tagliatelle-ragu","Tagliatelle al ragù","Emilia-Romagna","Primi",30,4,1,["400 g|tagliatelle fresche","400 g|ragù alla bolognese","q.b.|parmigiano grattugiato"],
+ ["Scalda il ragù in una padella ampia.","Cuoci le tagliatelle 2–3 minuti in acqua salata e scolale mantenendo un po’ di acqua di cottura.","Saltale nel ragù con poca acqua e servi con parmigiano."]),
+// ---- Toscana
+R("ribollita","Ribollita","Toscana","Primi",100,6,1,["300 g|fagioli cannellini cotti","300 g|cavolo nero","200 g|verza","2|carote","2|patate","1|cipolla","1|costa di sedano","4 fette|pane raffermo","3 cucchiai|olio extravergine"],
+ ["Soffriggi cipolla, carota e sedano, poi aggiungi le altre verdure a pezzi e due mestoli di fagioli.","Copri con acqua e cuoci 1 ora, poi frulla un po’ di fagioli per addensare.","In una pentola alterna pane e zuppa a strati e lascia riposare qualche ora.","Il giorno dopo riscalda la zuppa e servila con olio crudo."],"Si chiama «ribollita» perché si scalda di nuovo il giorno dopo."),
+R("bistecca-fiorentina","Bistecca alla fiorentina","Toscana","Secondi",25,2,2,["1 kg|costata di manzo con l’osso (alta 4–5 cm)","q.b.|sale grosso","q.b.|olio extravergine","q.b.|pepe nero"],
+ ["Tira fuori la carne dal frigo 1 ora prima.","Cuocila su griglia o piastra molto calda 5 minuti per lato, poi in piedi sull’osso per 3 minuti.","Sala con sale grosso solo a fine cottura.","Lascia riposare 5 minuti e servi con un filo d’olio."],"Cottura al sangue: è la tradizione."),
+R("cantucci","Cantucci","Toscana","Dolci",60,10,2,["250 g|farina","200 g|zucchero","2|uova","150 g|mandorle","1 cucchiaino|lievito chimico","1|arancia"],
+ ["Impasta farina, zucchero, uova, lievito e scorza d’arancia, poi aggiungi le mandorle.","Forma due filoncini e cuoci a 180 °C per 20 minuti.","Taglia a fette oblique e rimetti in forno per 10 minuti per lato, finché croccanti.","Servi con vino dolce."]),
+R("fagioli-uccelletto","Fagioli all’uccelletto","Toscana","Antipasti e contorni",35,4,1,["400 g|fagioli cannellini cotti","3|foglie di salvia","2|spicchi d’aglio","300 g|pomodori pelati","3 cucchiai|olio extravergine"],
+ ["Fai rosolare aglio e salvia nell’olio.","Aggiungi i pelati schiacciati e cuoci 10 minuti.","Unisci i fagioli e cuoci a fuoco basso 15 minuti.","Servi con un filo d’olio crudo."]),
+// ---- Lazio
+R("saltimbocca","Saltimbocca alla romana","Lazio","Secondi",25,4,1,["8|fettine di vitello","8|fette di prosciutto crudo","8|foglie di salvia","50 ml|vino bianco","30 g|burro","q.b.|farina"],
+ ["Su ogni fettina metti una fetta di prosciutto e una foglia di salvia, fissa con uno stuzzicadenti.","Infarina leggermente il lato della carne.","Rosola nel burro 2 minuti per lato, sfuma con il vino.","Servi subito con il fondo di cottura."]),
+R("gricia","Pasta alla gricia","Lazio","Primi",25,4,1,["320 g|rigatoni","150 g|guanciale","80 g|pecorino romano","q.b.|pepe nero"],
+ ["Cuoci il guanciale a listarelle in padella senza olio finché croccante.","Cuoci la pasta al dente.","Salta la pasta nel guanciale con un mestolo di acqua di cottura.","Fuori dal fuoco aggiungi pecorino e pepe e mescola."]),
+R("carciofi-romana","Carciofi alla romana","Lazio","Antipasti e contorni",50,4,2,["4|carciofi","1 mazzetto|menta","2|spicchi d’aglio","4 cucchiai|olio extravergine","1|limone","q.b.|sale"],
+ ["Pulisci i carciofi e tienili in acqua e limone.","Mescola menta, aglio tritato, sale e olio e riempi i carciofi.","Disponili a testa in giù in una pentola con acqua a metà altezza.","Cuoci coperto a fuoco basso circa 35 minuti."]),
+R("pasta-ceci","Pasta e ceci","Lazio","Primi",60,4,1,["300 g|ceci cotti","1|spicchio d’aglio","1|rametto di rosmarino","2 cucchiai|concentrato di pomodoro","150 g|pasta corta","3 cucchiai|olio extravergine"],
+ ["Soffriggi aglio e rosmarino nell’olio, aggiungi il concentrato e i ceci.","Frulla metà dei ceci con un po’ d’acqua e rimettili in pentola.","Aggiungi acqua e cuoci la pasta direttamente nella zuppa.","Servi con olio e pepe."]),
+R("frittata-zucchine","Frittata di zucchine","Lazio","Secondi",25,4,1,["3|zucchine","6|uova","40 g|parmigiano","1|spicchio d’aglio","q.b.|menta o basilico"],
+ ["Taglia le zucchine a rondelle e rosolale con aglio e olio.","Sbatti le uova con parmigiano, sale e le erbe.","Unisci le zucchine e versa in padella ben calda.","Cuoci coperta a fuoco basso, poi girala e finisci la cottura."]),
+// ---- Campania
+R("parmigiana","Parmigiana di melanzane","Campania","Secondi",90,6,2,["1 kg|melanzane","500 g|passata di pomodoro","250 g|mozzarella","80 g|parmigiano","1 mazzetto|basilico","q.b.|olio di semi per friggere"],
+ ["Affetta le melanzane a fette, friggile in olio caldo e scolale.","Prepara un sugo semplice con passata, aglio e basilico.","In una teglia alterna melanzane, sugo, mozzarella a pezzi e parmigiano.","Cuoci a 180 °C per 30 minuti e lascia riposare prima di tagliare."]),
+R("spaghetti-vongole","Spaghetti alle vongole","Campania","Primi",30,4,2,["320 g|spaghetti","1 kg|vongole","2|spicchi d’aglio","1|peperoncino","50 ml|vino bianco","1 mazzetto|prezzemolo","4 cucchiai|olio extravergine"],
+ ["Spurga le vongole in acqua salata per almeno 1 ora.","Fai aprire le vongole in padella coperta con aglio, olio, peperoncino e vino.","Sguscia metà delle vongole e filtra il liquido.","Cuoci gli spaghetti al dente e finisci in padella con le vongole e il prezzemolo."]),
+R("caprese","Insalata caprese","Campania","Antipasti e contorni",10,4,1,["4|pomodori maturi","300 g|mozzarella","1 mazzetto|basilico","3 cucchiai|olio extravergine","q.b.|sale e origano"],
+ ["Affetta pomodori e mozzarella a rondelle spesse.","Alternali in un piatto con foglie di basilico.","Condisci con olio e sale e servi a temperatura ambiente."]),
+R("pasta-patate-provola","Pasta e patate con la provola","Campania","Primi",50,4,1,["400 g|patate","200 g|pasta mista","100 g|scamorza","1|cipolla","50 g|pancetta","50 g|parmigiano"],
+ ["Soffriggi cipolla e pancetta, aggiungi le patate a cubetti e copri d’acqua.","Cuoci 15 minuti, poi unisci la pasta e cuoci finché la zuppa diventa cremosa.","A fuoco spento unisci scamorza a dadini e parmigiano e mescola."]),
+R("polpette-sugo","Polpette al sugo","Campania","Secondi",60,4,2,["500 g|carne macinata","2 fette|pane ammollato nel latte","1|uovo","50 g|parmigiano","500 g|passata di pomodoro","1|spicchio d’aglio","q.b.|basilico"],
+ ["Impasta la carne con pane strizzato, uovo, parmigiano e sale.","Forma delle polpette e rosolale in padella.","Prepara il sugo con aglio, olio e passata e aggiungi le polpette.","Cuoci coperto 25 minuti a fuoco basso."]),
+// ---- Puglia
+R("tiella","Tiella barese (riso, patate e cozze)","Puglia","Primi",90,4,2,["500 g|cozze","300 g|riso","500 g|patate","300 g|pomodorini","1|cipolla","50 g|pecorino","1 mazzetto|prezzemolo"],
+ ["Apri le cozze a crudo con un coltello, tenendo i molluschi nel guscio con la loro acqua.","In una teglia fai strati di patate a fette, cipolla, pomodorini e pecorino.","Aggiungi riso, cozze e acqua fino a coprire.","Cuoci a 180 °C per 50–60 minuti."]),
+R("fave-cicoria","Fave e cicoria","Puglia","Antipasti e contorni",60,4,1,["300 g|fave secche decorticate","500 g|cicoria","1|patata","q.b.|olio extravergine","q.b.|peperoncino"],
+ ["Cuoci le fave con la patata in acqua finché si sfaldano, poi schiaccia a purea.","Lessa la cicoria e condiscila con olio e peperoncino.","Servi la purea calda con la cicoria sopra e un filo d’olio."]),
+R("taralli","Taralli pugliesi","Puglia","Pane e pizze",70,10,2,["500 g|farina","125 ml|vino bianco","125 ml|olio extravergine","1 cucchiaino|sale","1 cucchiaio|semi di finocchio"],
+ ["Impasta tutti gli ingredienti fino a un composto liscio.","Forma dei cordoncini e chiudili ad anello.","Lessa i taralli in acqua bollente finché salgono a galla e asciugali.","Cuoci a 180 °C per circa 30 minuti."]),
+// ---- Sicilia
+R("arancini","Arancini al ragù","Sicilia","Antipasti e contorni",90,6,3,["400 g|riso","1|bustina di zafferano","200 g|ragù","100 g|piselli","100 g|mozzarella","q.b.|pangrattato","2|uova","q.b.|olio di semi per friggere"],
+ ["Cuoci il riso con zafferano e fallo raffreddare con burro e formaggio.","Prepara un ripieno con ragù, piselli e mozzarella.","Prendi un po’ di riso, fai un incavo, riempi e chiudi a sfera.","Passa in uova e pangrattato e friggi in olio caldo fino a doratura."]),
+R("pasta-sarde","Pasta con le sarde","Sicilia","Primi",50,4,2,["320 g|bucatini","300 g|sarde fresche","1 mazzetto|finocchietto selvatico","1|cipolla","30 g|uvetta","30 g|pinoli","2|acciughe","q.b.|pangrattato tostato"],
+ ["Cuoci il finocchietto in acqua, scolalo e usa la stessa acqua per la pasta.","Soffriggi cipolla e acciughe, aggiungi le sarde, uvetta e pinoli.","Unisci il finocchietto tritato e cuoci qualche minuto.","Condisci la pasta con il sugo e il pangrattato tostato."]),
+R("granita-limone","Granita al limone","Sicilia","Dolci",30,4,1,["250 ml|succo di limone","200 g|zucchero","500 ml|acqua","1|scorza di limone"],
+ ["Sciogli lo zucchero nell’acqua tiepida e lascia raffreddare.","Aggiungi succo e scorza e versa in un contenitore basso.","Metti in freezer e mescola con una forchetta ogni 30 minuti per 3 ore."],"Con una brioche è la colazione siciliana."),
+R("involtini-pescespada","Involtini di pesce spada","Sicilia","Secondi",40,4,2,["500 g|pesce spada a fette sottili","60 g|pangrattato","20 g|pinoli","20 g|uvetta","1|limone","q.b.|olio extravergine","q.b.|foglie di alloro"],
+ ["Mescola pangrattato, pinoli, uvetta, scorza di limone e un filo d’olio.","Spalma il composto sulle fette e arrotola.","Infilza gli involtini su spiedini alternando foglie di alloro.","Cuoci in padella o forno 10 minuti."]),
+// ---- Trentino-Alto Adige
+R("canederli","Canederli","Trentino-Alto Adige","Primi",50,4,2,["300 g|pane raffermo","200 ml|latte","3|uova","100 g|speck","1|cipolla","2 cucchiai|farina","1 mazzetto|prezzemolo","1.5 l|brodo"],
+ ["Taglia il pane a cubetti e bagnalo con latte e uova.","Aggiungi speck e cipolla rosolati, prezzemolo e farina.","Forma delle palle con le mani bagnate.","Cuoci in brodo bollente per 15 minuti e servi."]),
+R("strudel-mele","Strudel di mele","Trentino-Alto Adige","Dolci",70,8,2,["1|rotolo di pasta sfoglia o pasta da strudel","5|mele","50 g|uvetta","40 g|pinoli","60 g|zucchero","1 cucchiaino|cannella","40 g|pangrattato","40 g|burro"],
+ ["Tosta il pangrattato nel burro.","Mescola mele a fettine, uvetta, pinoli, zucchero e cannella.","Stendi la pasta, cospargi il pangrattato e il ripieno, arrotola.","Cuoci a 190 °C per circa 40 minuti e servi con zucchero a velo."]),
+// ---- Friuli
+R("frico","Frico con patate","Friuli-Venezia Giulia","Secondi",30,4,1,["300 g|formaggio Montasio","3|patate","1|cipolla","2 cucchiai|olio extravergine"],
+ ["Taglia le patate sottili e cuocile in padella con cipolla e olio.","Aggiungi il formaggio a dadini o grattugiato.","Cuoci a fuoco medio finché diventa una frittella dorata e croccante, girandola a metà."]),
+// ---- Valle d'Aosta
+R("fonduta","Fonduta valdostana","Valle d’Aosta","Antipasti e contorni",40,4,2,["300 g|fontina","250 ml|latte","3|tuorli","20 g|burro","q.b.|pane tostato"],
+ ["Taglia la fontina a dadi e lasciala 2 ore nel latte.","Scioglila a bagnomaria con il burro mescolando.","Aggiungi i tuorli uno alla volta finché diventa una crema liscia.","Servi con crostini di pane."]),
+// ---- Umbria
+R("zuppa-lenticchie","Zuppa di lenticchie","Umbria","Primi",60,4,1,["250 g|lenticchie","1|carota","1|costa di sedano","1|cipolla","200 g|pomodori pelati","3 cucchiai|olio extravergine","4 fette|pane tostato"],
+ ["Soffriggi sedano, carota e cipolla.","Aggiungi pomodoro e lenticchie e copri d’acqua.","Cuoci 40 minuti a fuoco basso, aggiungendo acqua se serve.","Servi con crostini e olio."]),
+R("spaghetti-norcina","Spaghetti alla norcina","Umbria","Primi",30,4,1,["320 g|spaghetti","200 g|salsiccia","100 ml|panna","1|scalogno","50 g|pecorino","q.b.|pepe nero"],
+ ["Rosola la salsiccia sbriciolata con lo scalogno.","Aggiungi la panna e cuoci 3 minuti.","Cuoci gli spaghetti al dente e saltali nel sugo con pecorino e pepe."]),
+// ---- Abruzzo
+R("arrosticini","Arrosticini","Abruzzo","Secondi",25,4,1,["600 g|agnello a cubetti","q.b.|sale","q.b.|olio extravergine"],
+ ["Infilza i cubetti di agnello su spiedini sottili.","Cuoci su griglia molto calda girandoli spesso, 6–8 minuti.","Sala a fine cottura e servi con pane."]),
+// ---- Calabria
+R("peperoni-patate","Peperoni e patate","Calabria","Antipasti e contorni",45,4,1,["3|peperoni","3|patate","1|cipolla","3 cucchiai|olio extravergine","q.b.|peperoncino"],
+ ["Taglia peperoni e patate a pezzi.","Soffriggi cipolla e peperoncino, aggiungi le patate e poi i peperoni.","Cuoci coperto a fuoco medio finché sono teneri."]),
+// ---- Sardegna
+R("malloreddus","Malloreddus alla campidanese","Sardegna","Primi",50,4,2,["320 g|malloreddus (gnocchetti sardi)","250 g|salsiccia","400 g|pomodori pelati","1|cipolla","1|spicchio d’aglio","50 g|pecorino sardo","q.b.|zafferano"],
+ ["Soffriggi cipolla e aglio, aggiungi la salsiccia sbriciolata.","Unisci il pomodoro e un pizzico di zafferano e cuoci 20 minuti.","Cuoci la pasta e mantecala nel sugo con il pecorino."]),
+// ---- altri classici
+R("pasta-forno","Pasta al forno","Campania","Primi",70,6,2,["400 g|rigatoni","400 g|passata di pomodoro","200 g|macinato","200 g|mozzarella","80 g|parmigiano","2|uova sode"],
+ ["Prepara un sugo con la carne macinata e la passata.","Cuoci la pasta molto al dente e condiscila con il sugo.","In una teglia alterna pasta, mozzarella, uova sode a fette e parmigiano.","Cuoci a 200 °C per 25 minuti finché è gratinata."]),
+R("pollo-peperoni","Pollo con i peperoni","Lazio","Secondi",50,4,1,["800 g|pollo a pezzi","3|peperoni","1|cipolla","200 g|pomodori pelati","50 ml|vino bianco","1|spicchio d’aglio"],
+ ["Rosola il pollo in olio finché dorato.","Aggiungi cipolla, aglio e vino e fai evaporare.","Unisci peperoni a falde e pomodoro, copri e cuoci 30 minuti."]),
+R("insalata-riso","Insalata di riso","Lombardia","Antipasti e contorni",30,4,1,["300 g|riso","150 g|tonno sott’olio","100 g|olive","1|peperone","3|pomodori","1|mais in scatola","q.b.|olio extravergine"],
+ ["Cuoci il riso al dente, scolalo e raffreddalo sotto acqua fredda.","Taglia le verdure a dadini.","Mescola tutti gli ingredienti con olio e sale e lascia insaporire in frigo."]),
+R("pizzoccheri","Pizzoccheri della Valtellina","Lombardia","Primi",60,4,2,["320 g|pizzoccheri","200 g|patate","150 g|verza","100 g|burro","3|spicchi d’aglio","150 g|formaggio fontina","q.b.|parmigiano"],
+ ["Cuoci patate e verza a pezzi in acqua salata per 10 minuti.","Aggiungi i pizzoccheri e cuoci altri 10 minuti.","Scola e alterna a strati in una teglia con fontina a fette e parmigiano.","Versa il burro fuso con l’aglio e servi subito."]),
+R("pasta-pomodorini","Pasta ai pomodorini","Campania","Primi",20,4,1,["320 g|spaghetti","400 g|pomodorini","2|spicchi d’aglio","1 mazzetto|basilico","3 cucchiai|olio extravergine"],
+ ["Fai rosolare l’aglio nell’olio e aggiungi i pomodorini tagliati.","Cuoci 8–10 minuti a fuoco vivace.","Cuoci la pasta, saltala nel sugo e aggiungi il basilico."]),
+R("zuppa-pesce","Zuppa di pesce","Sicilia","Secondi",60,4,3,["500 g|pesce misto (merluzzo, orata)","300 g|cozze","200 g|gamberi","400 g|pomodori pelati","1|spicchio d’aglio","50 ml|vino bianco","q.b.|prezzemolo e peperoncino"],
+ ["Soffriggi aglio e peperoncino, aggiungi il pesce a pezzi e sfuma con il vino.","Aggiungi il pomodoro e cuoci 10 minuti.","Unisci cozze e gamberi e cuoci finché le cozze si aprono.","Servi con crostoni di pane e prezzemolo."]),
+R("crema-pasticcera","Crema pasticcera","Emilia-Romagna","Dolci",25,6,1,["500 ml|latte","4|tuorli","100 g|zucchero","40 g|amido di mais","1|bacca di vaniglia"],
+ ["Scalda il latte con la vaniglia.","Sbatti tuorli, zucchero e amido, poi unisci il latte filtrato.","Cuoci a fuoco basso mescolando finché si addensa.","Raffredda con pellicola a contatto."]),
+R("mele-forno","Mele al forno","Trentino-Alto Adige","Dolci",45,4,1,["4|mele","40 g|zucchero","1 cucchiaino|cannella","20 g|burro","30 g|uvetta"],
+ ["Elimina il torsolo delle mele senza bucare il fondo.","Riempi con zucchero, cannella, burro e uvetta.","Cuoci a 180 °C per 30–35 minuti."]),
+R("peperonata","Peperonata","Campania","Antipasti e contorni",40,4,1,["3|peperoni","1|cipolla","300 g|pomodori pelati","3 cucchiai|olio extravergine","1|spicchio d’aglio","q.b.|basilico"],
+ ["Soffriggi cipolla e aglio, aggiungi i peperoni a strisce.","Unisci il pomodoro e cuoci coperto 30 minuti.","Finisci con basilico fresco."]),
+R("crostata-marmellata","Crostata di marmellata","Toscana","Dolci",60,8,1,["300 g|farina","150 g|burro","100 g|zucchero","1|uovo","1|tuorlo","300 g|marmellata","1|limone"],
+ ["Impasta farina, burro freddo, zucchero, uova e scorza di limone.","Riposa 30 minuti in frigo, poi stendi e fodera lo stampo.","Riempi con la marmellata e decora con strisce di pasta.","Cuoci a 180 °C per 35 minuti."])
+];
+export { RICETTE2, REGIONI2 };

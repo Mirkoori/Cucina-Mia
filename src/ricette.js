@@ -1,3 +1,4 @@
+import { RICETTE2, REGIONI2 } from "./ricette2.js";
 // Ricette di base, scritte per Cucina Mia. Dosi indicative: assaggia e regola.
 // ing: [quantità|null, unità, nome, id ingrediente (opzionale)]
 var REGIONI=[
@@ -5,6 +6,7 @@ var REGIONI=[
  {k:"Emilia-Romagna",c:"#FFE066"},{k:"Toscana",c:"#FFD9A0"},{k:"Lazio",c:"#CDBBFF"},{k:"Campania",c:"#FF9F80"},
  {k:"Puglia",c:"#BFE6FF"},{k:"Sicilia",c:"#F9C74F"}
 ];
+REGIONI=REGIONI.concat(REGIONI2);
 var RC={};REGIONI.forEach(function(r){RC[r.k]=r.c});
 var TIPI=["Tutte","Primi","Secondi","Antipasti e contorni","Pane e pizze","Dolci"];
 
@@ -90,4 +92,5 @@ var RICETTE=[
  steps:["Separa i tuorli dagli albumi. Monta i tuorli con lo zucchero fino a una crema chiara e spumosa.","Aggiungi il mascarpone e mescola finché è liscio.","Monta gli albumi a neve ferma e incorporali con delicatezza, dal basso verso l’alto.","Inzuppa i savoiardi brevemente nel caffè e disponili in una pirofila. Copri con metà crema, ripeti con un secondo strato.","Metti in frigo almeno 6 ore. Spolvera di cacao poco prima di servire."],
  note:"Contiene uova crude: non adatto a donne in gravidanza, bambini piccoli e persone fragili. Usa uova freschissime."}
 ];
+RICETTE=RICETTE.concat(RICETTE2);
 export { REGIONI, RC, TIPI, RICETTE };

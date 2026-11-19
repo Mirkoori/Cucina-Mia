@@ -1,6 +1,6 @@
 # Cucina Mia
 
-App di cucina: ingredienti di stagione, ricette italiane divise per regione, il tuo ricettario personale e gli strumenti da cucina. Stessa grafica di Orto Mio, in tinta terracotta. Tutto funziona senza internet e senza account: i dati restano sul telefono.
+App di cucina: ingredienti di stagione, 78 ricette italiane divise per regione, il tuo ricettario personale e gli strumenti da cucina. Stessa grafica di Orto Mio, in tinta terracotta. Tutto funziona senza internet e senza account: i dati restano sul telefono.
 
 ## Cosa c'è
 
