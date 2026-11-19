@@ -415,10 +415,20 @@ function sheetRec(r){
     '<div><p class="lbl">Preparazione</p><ol class="steps">'+steps+'</ol></div>'+
     (r.storia?'<div class="tip storia"><p class="lbl">Un po’ di storia</p><p>'+esc(r.storia)+'</p></div>':'')+
     (r.note?'<div class="tip"><p class="lbl">Da sapere</p><p>'+esc(r.note)+'</p></div>':'')+
-    (r.shared?'':'<button class="btn" data-act="share" data-id="'+esc(r.id)+'">Condividi la ricetta</button>')+
+    (r.shared?'':'<button class="btn pri" data-act="addmenu" data-id="'+esc(r.id)+'">Aggiungi a un menu</button><button class="btn" data-act="share" data-id="'+esc(r.id)+'">Condividi la ricetta</button>')+
     (shareMode?sharedBanner():'')+
    '</div>'+
    (r.shared?'<div class="sh-cta"><button class="btn pri" data-act="saveshared">Salva nel mio ricettario</button><button class="btn" data-act="closeshared">Chiudi</button></div>':'<div class="sh-cta'+(third?" three":"")+'"><button class="btn pri" data-act="fav" data-id="'+esc(r.id)+'" aria-pressed="'+fav+'">'+(fav?IC.heartOn+"Preferita":IC.heart+"Preferita")+'</button><button class="btn" data-act="edit" data-id="'+esc(r.id)+'">Modifica</button>'+third+'</div>');
+}
+function sheetAddMenu(r){
+  var rows=DB.menus.map(function(m){
+    var on=m.rec.indexOf(r.id)>-1;
+    return '<button class="mrow'+(on?" on":"")+'" data-act="addm" data-mid="'+esc(m.id)+'" data-id="'+esc(r.id)+'" aria-pressed="'+on+'"><span style="display:grid;gap:2px;flex:1;min-width:0"><b>'+esc(m.n)+'</b><small>'+m.rec.length+(m.rec.length===1?" ricetta":" ricette")+(on?" · già dentro":"")+'</small></span><span aria-hidden="true">'+(on?"✓":"+")+'</span></button>';
+  }).join("");
+  return '<div class="sh-head short hasback" style="--c:#FFD9A0">'+headBtns()+'<h2>Aggiungi a un menu</h2><div class="sh-pills row"><span class="pill">'+esc(r.n)+'</span></div></div>'+
+   '<div class="sh-body">'+(rows?'<div><p class="lbl">I tuoi menu (tocca per aggiungere o togliere)</p><div class="rlist">'+rows+'</div></div>':'<p>Non hai ancora nessun menu: creane uno qui sotto.</p>')+
+   '<div><p class="lbl">Nuovo menu</p><label class="search"><input id="newMenuName" type="text" maxlength="60" placeholder="Es. Cena di Natale" autocomplete="off" aria-label="Nome del nuovo menu"></label></div>'+
+   '<button class="btn pri" data-act="addnew" data-id="'+esc(r.id)+'">Crea menu e aggiungi</button></div>';
 }
 function showSheet(html){
   $("#sheetRoot").innerHTML='<div class="scrim" data-act="scrim"><div class="sheet" role="dialog" aria-modal="true">'+html+'</div></div>';
@@ -428,6 +438,7 @@ function showSheet(html){
 function renderSheet(){
   var s=state.sheet;if(!s){hideSheet();return}
   if(s.t==="ing"){var v=BY[s.id];if(!v){hideSheet();return}showSheet(sheetIng(v))}
+  else if(s.t==="addmenu"){var ar=getRecipe(s.id);if(!ar){hideSheet();return}showSheet(sheetAddMenu(ar))}
   else if(s.t==="rec"){var r=getRecipe(s.id);if(!r){hideSheet();return}if(recPers==null||s.fresh){recPers=r.pers||4;s.fresh=false}showSheet(sheetRec(r))}
   else if(s.t==="edit"){showSheet(sheetEdit())}
 }
@@ -591,6 +602,9 @@ document.addEventListener("click",function(e){
     saveDB();t.setAttribute("aria-pressed",String(i<0));t.innerHTML=(i<0?IC.heartOn:IC.heart)+"Preferita";
     if(currentView()==="ricettario")renderRicettario();
   }
+  else if(a==="addmenu"){openSheet("addmenu",id,true)}
+  else if(a==="addm"){var am=DB.menus.filter(function(x){return x.id===t.dataset.mid})[0];if(am){var ai=am.rec.indexOf(id);if(ai>-1){am.rec.splice(ai,1);toast("Tolta da «"+am.n+"»")}else{am.rec.push(id);toast("Aggiunta a «"+am.n+"»")}saveDB();var asc=$(".sheet").scrollTop;showSheet(sheetAddMenu(getRecipe(id)));$(".sheet").scrollTop=asc}}
+  else if(a==="addnew"){var inp=$("#newMenuName"),nn=inp?inp.value.trim():"";if(!nn){toast("Scrivi un nome per il menu");if(inp)inp.focus()}else{DB.menus.unshift({id:"m"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),n:nn,pers:4,rec:[id],done:{}});saveDB();toast("Menu «"+nn+"» creato");showSheet(sheetAddMenu(getRecipe(id)))}}
   else if(a==="share"){var sr=getRecipe(id);if(sr)shareRecipe(sr)}
   else if(a==="saveshared"){if(sharedTmp){var nr=Object.assign({},sharedTmp,{id:"u-"+Date.now().toString(36)+Math.random().toString(36).slice(2,5)});delete nr.shared;DB.mine.push(nr);saveDB();toast("Salvata nel tuo ricettario");sharedTmp=null;shareMode=false;hideSheet();location.hash="#ricettario";route()}}
   else if(a==="closeshared"){sharedTmp=null;shareMode=false;hideSheet()}
