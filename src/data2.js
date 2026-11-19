@@ -159,4 +159,12 @@ I("farro","Farro","Dispensa","sack",{a:"#D9B070",b:"#A8844A",w:"#F0DCA8"},null,"
 I("avena","Fiocchi d’avena","Dispensa","sack",{a:"#E8E0C8",b:"#B8AE90",w:"#FFF8E8"},null,"In dispensa, al secco.",["latte","miele","frutta","yogurt","cannella"],["Fiocchi d’orzo"],"Per un porridge cremoso scaldali nel latte mescolando per qualche minuto.",["avena"]),
 I("amido","Amido di mais","Dispensa","sack",{a:"#FFFFFF",b:"#E0E0E0",w:"#F5F5F5"},null,"In dispensa, al secco.",["creme","salse","latte","uova","zucchero"],["Farina (per addensare, in quantità maggiore)"],"Si scioglie prima in poca acqua fredda, poi si aggiunge al liquido caldo.",["amido"])
 ];
+var KCAL={asparagi:24,broccoli:35,cavolfiore:25,cappuccio:25,verza:25,cavolini:43,carciofi:22,fagiolini:24,fave:54,finocchio:9,cetriolo:12,champignon:25,porcini:31,lattuga:15,rucola:28,scarola:15,bietola:20,cicoria:20,ravanelli:14,barbabietola:43,sedanorapa:40,porro:30,scalogno:72,cipollotti:28,mais:90,patatadolce:85,topinambur:73,
+mela:45,pera:40,arancia:34,mandarino:72,limone:11,pompelmo:26,kiwi:51,fragole:27,lamponi:34,mirtilli:43,ciliegie:38,albicocche:28,pesche:27,susine:42,uva:61,fichi:47,melone:33,anguria:16,caki:65,melograno:63,castagne:165,banana:65,
+pepe:255,peperoncino:40,noce_moscata:525,cannella:247,zafferano:310,vaniglia:288,zenzero:80,paprika:282,
+ricotta:146,ricottasalata:280,gorgonzola:330,panna:337,latte:64,yogurt:66,grana:392,scamorza:334,stracchino:300,fontina:343,
+pollo:100,coscepollo:139,tacchino:107,maiale:157,salsiccia:304,pancetta:661,crudo:268,cotto:215,speck:300,bresaola:151,manzo:150,agnello:170,salame:440,mortadella:311,
+salmone:185,merluzzo:71,tonnofresco:158,tonnoscatola:192,orata:110,branzino:100,sarde:129,gamberi:71,calamari:68,polpo:57,cozze:68,vongole:72,pescespada:109,
+passata:25,concentrato:70,pastafresca:280,semola:360,polenta:353,pangrattato:357,zucchero:392,lievitobirra:108,acetovino:20,balsamico:88,vinobianco:70,vinorosso:73,olive:145,capperi:23,ceci:316,lenticchie:291,cannellini:291,borlotti:291,pinoli:673,noci:689,mandorle:603,nocciole:625,pistacchi:608,uvetta:283,miele:304,cacao:355,cioccolato:515,savoiardi:380,gelatina:338,oliosemi:900,pomodorisecchi:258,couscous:360,orzo:319,farro:335,avena:372,amido:343};
+V2.forEach(function(v){if(v.kcal==null&&KCAL[v.id])v.kcal=KCAL[v.id]});
 export { V2 };

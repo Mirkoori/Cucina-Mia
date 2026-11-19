@@ -144,6 +144,7 @@ var V1=[
  tip:"Spezzali con le mani o con la forchetta: sono più saporiti di quelli già passati."}
 ];
 var V=V1.concat(V2);
+({mascarpone:455,guanciale:655,vitello:107,pelati:21}) && V.forEach(function(v){var x={mascarpone:455,guanciale:655,vitello:107,pelati:21}[v.id];if(x&&v.kcal==null)v.kcal=x});
 var BY={};V.forEach(function(v){BY[v.id]=v});
 var CATS=["Tutti","Verdure","Frutta","Erbe e spezie","Latticini e uova","Carne","Pesce","Dispensa"];
 
