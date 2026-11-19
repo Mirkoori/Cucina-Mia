@@ -500,7 +500,7 @@ document.addEventListener("click",function(e){
   else if(a==="back"){backSheet()}
   else if(a==="month"){state.month=+t.dataset.m;renderIngredienti()}
   else if(a==="seg"){state.seg=t.dataset.k;renderIngredienti()}
-  else if(a==="cat"){state.cat=t.dataset.k;renderIngredienti()}
+  else if(a==="cat"){state.cat=t.dataset.k;if(state.cat!=="Tutti"&&state.cat!=="Verdure"&&state.cat!=="Frutta"&&state.seg==="stagione")state.seg="tutti";renderIngredienti()}
   else if(a==="reset"){state.seg="tutti";state.cat="Tutti";state.q="";$("#q").value="";renderIngredienti()}
   else if(a==="rseg"){state.rseg=t.dataset.k;renderRicettario()}
   else if(a==="rreg"){state.rreg=t.dataset.k;renderRicettario()}
