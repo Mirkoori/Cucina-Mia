@@ -52,7 +52,7 @@ function toast(msg){var t=$("#toast");t.textContent=msg;t.hidden=false;clearTime
 function linkIng(r){r.ing=(r.ing||[]).map(function(i){if(i[3]||!i[2])return i;var id=matchIng(i[2]);return id?[i[0],i[1],i[2],id]:i});return r}
 function baseRecipes(){return RICETTE.map(function(r){return DB.over[r.id]?Object.assign({},DB.over[r.id],{id:r.id,orig:true,edited:true,storia:r.storia}):Object.assign({orig:true},r)})}
 function allRecipes(){return baseRecipes().concat(DB.mine.map(function(r){return Object.assign({},r,{user:true})})).map(linkIng)}
-function getRecipe(id){return allRecipes().filter(function(r){return r.id===id})[0]}
+function getRecipe(id){if(sharedTmp&&id===sharedTmp.id)return sharedTmp;return allRecipes().filter(function(r){return r.id===id})[0]}
 function isFav(id){return DB.fav.indexOf(id)>-1}
 function safeImg(s){return typeof s==="string"&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(s)?s:null}
 function fmtMin(m){m=+m||0;if(m<60)return m+" min";var h=Math.floor(m/60),r=m%60;return h+" h"+(r?" "+r:"")}
@@ -358,6 +358,44 @@ function headBtns(){
   return (state.stack.length?'<button class="sh-close" style="right:auto;left:12px" data-act="back" aria-label="Indietro">'+IC.back+'</button>':'')+'<button class="sh-close" data-act="close" aria-label="Chiudi">'+IC.x+'</button>';
 }
 var recPers=null;
+/* ---------- condivisione ---------- */
+var SHARE_URL="https://mirkoori.github.io/Cucina-Mia/";
+var APP_URL="https://github.com/Mirkoori/Cucina-Mia/releases/latest";
+var sharedTmp=null,shareMode=false;
+function b64enc(str){var b=new TextEncoder().encode(str),s="";for(var i=0;i<b.length;i++)s+=String.fromCharCode(b[i]);return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function b64dec(t){t=t.replace(/-/g,"+").replace(/_/g,"/");while(t.length%4)t+="=";var s=atob(t),b=new Uint8Array(s.length);for(var i=0;i<s.length;i++)b[i]=s.charCodeAt(i);return new TextDecoder().decode(b)}
+function shareLink(r){
+  if(r.orig&&!r.edited&&!r.user)return SHARE_URL+"?r="+encodeURIComponent(r.id);
+  var o={n:r.n,reg:r.reg||"",tipo:r.tipo||"",min:r.min,pers:r.pers,dif:r.dif,ing:(r.ing||[]).map(function(i){return [i[0],i[1],i[2]]}),steps:r.steps||[],note:r.note||"",storia:r.storia||""};
+  return SHARE_URL+"?c="+b64enc(JSON.stringify(o));
+}
+function shareText(r){
+  var f=recPers/(r.pers||4);
+  var t=r.n+"\n"+(r.reg?r.reg+" · ":"")+fmtMin(r.min)+" · "+recPers+(recPers===1?" persona":" persone")+"\n\nIngredienti\n";
+  t+=r.ing.map(function(i){return "- "+fmtAmt(i[0],i[1],f)+" "+i[2]}).join("\n");
+  t+="\n\nPreparazione\n"+r.steps.map(function(x,k){return (k+1)+". "+x}).join("\n");
+  t+="\n\nVedi la ricetta e scopri l'app Cucina Mia: "+shareLink(r);
+  return t;
+}
+async function shareRecipe(r){
+  var text=shareText(r);
+  try{await Share.share({title:r.n,text:text,url:shareLink(r),dialogTitle:"Condividi la ricetta"});return}catch(e){if(e&&/cancel/i.test(String(e.message||e)))return}
+  try{await navigator.clipboard.writeText(text);toast("Ricetta copiata: incollala dove vuoi")}catch(e2){toast("Non riesco a condividere da qui")}
+}
+function parseShared(){
+  try{
+    var q=new URLSearchParams(location.search),id=q.get("r"),c=q.get("c");
+    if(id&&RICETTE.some(function(x){return x.id===id}))return {t:"base",id:id};
+    if(c){var o=JSON.parse(b64dec(c));if(o&&typeof o.n==="string"&&Array.isArray(o.ing)&&Array.isArray(o.steps)){
+      return {t:"custom",rec:{id:"shared-tmp",n:o.n.slice(0,120),reg:String(o.reg||""),tipo:String(o.tipo||"Primi"),min:+o.min||30,pers:+o.pers||4,dif:+o.dif||1,
+        ing:o.ing.slice(0,80).map(function(i){return [i[0]==null?null:+i[0]||null,String(i[1]||""),String(i[2]||"").slice(0,120)]}),
+        steps:o.steps.slice(0,60).map(function(x){return String(x).slice(0,1500)}),note:String(o.note||"").slice(0,1500),storia:String(o.storia||"").slice(0,1500),shared:true}}}
+  }}catch(e){}
+  return null;
+}
+function sharedBanner(){
+  return '<div class="tip sharedbox"><p class="lbl">Ricetta condivisa con Cucina Mia</p><p>Un amico ti ha mandato questa ricetta. Con l’app trovi centinaia di ricette italiane, schede degli ingredienti, un menu con la lista della spesa, e puoi salvare le tue.</p><a class="btn pri" href="'+APP_URL+'" target="_blank" rel="noopener">Scarica l’app</a></div>';
+}
 function sheetRec(r){
   var f=recPers/(r.pers||4);
   var im=safeImg(r.img);
@@ -377,8 +415,10 @@ function sheetRec(r){
     '<div><p class="lbl">Preparazione</p><ol class="steps">'+steps+'</ol></div>'+
     (r.storia?'<div class="tip storia"><p class="lbl">Un po’ di storia</p><p>'+esc(r.storia)+'</p></div>':'')+
     (r.note?'<div class="tip"><p class="lbl">Da sapere</p><p>'+esc(r.note)+'</p></div>':'')+
+    (r.shared?'':'<button class="btn" data-act="share" data-id="'+esc(r.id)+'">Condividi la ricetta</button>')+
+    (shareMode?sharedBanner():'')+
    '</div>'+
-   '<div class="sh-cta'+(third?" three":"")+'"><button class="btn pri" data-act="fav" data-id="'+esc(r.id)+'" aria-pressed="'+fav+'">'+(fav?IC.heartOn+"Preferita":IC.heart+"Preferita")+'</button><button class="btn" data-act="edit" data-id="'+esc(r.id)+'">Modifica</button>'+third+'</div>';
+   (r.shared?'<div class="sh-cta"><button class="btn pri" data-act="saveshared">Salva nel mio ricettario</button><button class="btn" data-act="closeshared">Chiudi</button></div>':'<div class="sh-cta'+(third?" three":"")+'"><button class="btn pri" data-act="fav" data-id="'+esc(r.id)+'" aria-pressed="'+fav+'">'+(fav?IC.heartOn+"Preferita":IC.heart+"Preferita")+'</button><button class="btn" data-act="edit" data-id="'+esc(r.id)+'">Modifica</button>'+third+'</div>');
 }
 function showSheet(html){
   $("#sheetRoot").innerHTML='<div class="scrim" data-act="scrim"><div class="sheet" role="dialog" aria-modal="true">'+html+'</div></div>';
@@ -399,7 +439,7 @@ function openSheet(t,id,push){
   var c=$(".sh-close:last-of-type");if(c)c.focus();
 }
 function hideSheet(){
-  state.sheet=null;state.stack=[];state.edit=null;recPers=null;
+  state.sheet=null;state.stack=[];state.edit=null;recPers=null;shareMode=false;sharedTmp=null;
   $("#sheetRoot").innerHTML="";document.body.style.overflow="";
   if(lastFocus&&document.contains(lastFocus)&&lastFocus.focus)lastFocus.focus();
 }
@@ -551,6 +591,9 @@ document.addEventListener("click",function(e){
     saveDB();t.setAttribute("aria-pressed",String(i<0));t.innerHTML=(i<0?IC.heartOn:IC.heart)+"Preferita";
     if(currentView()==="ricettario")renderRicettario();
   }
+  else if(a==="share"){var sr=getRecipe(id);if(sr)shareRecipe(sr)}
+  else if(a==="saveshared"){if(sharedTmp){var nr=Object.assign({},sharedTmp,{id:"u-"+Date.now().toString(36)+Math.random().toString(36).slice(2,5)});delete nr.shared;DB.mine.push(nr);saveDB();toast("Salvata nel tuo ricettario");sharedTmp=null;shareMode=false;hideSheet();location.hash="#ricettario";route()}}
+  else if(a==="closeshared"){sharedTmp=null;shareMode=false;hideSheet()}
   else if(a==="edit"){var rr=getRecipe(id);if(rr)openEditor(rr,false)}
   else if(a==="new"){openEditor(null,false)}
   else if(a==="scan"){openEditor(null,true)}
@@ -593,4 +636,12 @@ document.addEventListener("change",function(e){
 window.addEventListener("hashchange",route);
 
 menuApi=initMenu({DB:DB,esc:esc,IC:IC,getRecipe:getRecipe,allRecipes:allRecipes,BY:BY,RC:RC,TIPI:TIPI,fmtAmt:fmtAmt,saveDB:saveDB,toast:toast});
-loadDB().then(route);
+loadDB().then(function(){
+  route();
+  var sh=parseShared();
+  if(sh){
+    shareMode=true;
+    if(sh.t==="custom"){sharedTmp=sh.rec;openSheet("rec",sh.rec.id,false)}else openSheet("rec",sh.id,false);
+    try{history.replaceState(null,"",location.pathname+location.hash)}catch(e){}
+  }
+});

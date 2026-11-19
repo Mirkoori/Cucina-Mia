@@ -353,3 +353,5 @@ input[type=file]{display:none}
 .mit.on{opacity:.55}
 .mit.on .mn{text-decoration:line-through}
 .mit.on .bx{background:var(--accent);color:#2A1710}
+.sharedbox{display:grid;gap:10px}
+.sharedbox .btn{text-decoration:none;display:flex;align-items:center;justify-content:center}
