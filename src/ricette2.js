@@ -6,7 +6,7 @@ function P(s){var a=s.split("|"),q=a[0].trim(),n=a[1].trim();
 function R(id,n,reg,tipo,min,pers,dif,ing,steps,note){return{id:id,n:n,reg:reg,tipo:tipo,min:min,pers:pers,dif:dif,ing:ing.map(P),steps:steps,note:note||null}}
 var REGIONI2=[
  {k:"Trentino-Alto Adige",c:"#9BE0C6"},{k:"Friuli-Venezia Giulia",c:"#FFB7A8"},{k:"Valle d’Aosta",c:"#D8C7FF"},
- {k:"Umbria",c:"#BDEFC0"},{k:"Abruzzo",c:"#FFC6A1"},{k:"Calabria",c:"#FFB3C6"},{k:"Sardegna",c:"#6FD0E0"}
+ {k:"Umbria",c:"#BDEFC0"},{k:"Abruzzo",c:"#FFC6A1"},{k:"Calabria",c:"#FFB3C6"},{k:"Sardegna",c:"#6FD0E0"},{k:"Marche",c:"#CDF28F"},{k:"Molise",c:"#FFE066"},{k:"Basilicata",c:"#A9C7FF"}
 ];
 var RICETTE2=[
 // ---- Piemonte
@@ -143,5 +143,61 @@ R("peperonata","Peperonata","Campania","Antipasti e contorni",40,4,1,["3|peperon
  ["Soffriggi cipolla e aglio, aggiungi i peperoni a strisce.","Unisci il pomodoro e cuoci coperto 30 minuti.","Finisci con basilico fresco."]),
 R("crostata-marmellata","Crostata di marmellata","Toscana","Dolci",60,8,1,["300 g|farina","150 g|burro","100 g|zucchero","1|uovo","1|tuorlo","300 g|marmellata","1|limone"],
  ["Impasta farina, burro freddo, zucchero, uova e scorza di limone.","Riposa 30 minuti in frigo, poi stendi e fodera lo stampo.","Riempi con la marmellata e decora con strisce di pasta.","Cuoci a 180 °C per 35 minuti."])
+,
+// ---- secondo giro
+R("jota","Jota","Friuli-Venezia Giulia","Primi",90,4,1,["300 g|fagioli borlotti cotti","300 g|crauti o verza","2|patate","150 g|pancetta o speck","1|cipolla","1|spicchio d’aglio","q.b.|olio extravergine"],
+ ["Soffriggi cipolla, aglio e pancetta in olio.","Aggiungi patate a cubetti, fagioli e crauti e copri d’acqua.","Cuoci 1 ora a fuoco basso, schiacciando qualche fagiolo per addensare.","Servi caldo con un filo d’olio."]),
+R("gnocchi-susine","Gnocchi di susine","Friuli-Venezia Giulia","Dolci",60,4,2,["500 g|patate","150 g|farina","1|uovo","8|susine","8|zollette di zucchero","q.b.|pangrattato e burro","1 cucchiaino|cannella"],
+ ["Prepara un impasto di gnocchi con patate lessate, farina e uovo.","Avvolgi ogni susina snocciolata con una zolletta di zucchero nell’impasto.","Lessa in acqua bollente finché salgono a galla.","Passa in burro e pangrattato tostato con cannella."]),
+R("cotoletta-valdostana","Cotoletta alla valdostana","Valle d’Aosta","Secondi",35,4,2,["4|costolette di vitello","4|fette di fontina","4|fette di prosciutto cotto","2|uova","q.b.|pangrattato","60 g|burro"],
+ ["Apri a libro le costolette, riempi con fontina e prosciutto e chiudi.","Passa in uovo sbattuto e pangrattato.","Cuoci nel burro 4–5 minuti per lato, finché dorate e filanti."]),
+R("zuppa-pane-fontina","Zuppa con pane e fontina","Valle d’Aosta","Primi",50,4,1,["8 fette|pane raffermo","300 g|fontina","1 l|brodo","300 g|verza","40 g|burro","q.b.|cannella"],
+ ["Lessa la verza in poco brodo e scolala.","In una pirofila alterna pane, verza e fontina a fette.","Copri con il brodo caldo e un po’ di burro fuso.","Cuoci a 180 °C per 25 minuti."]),
+R("strangozzi-pomodoro","Strangozzi al sugo di pomodoro","Umbria","Primi",35,4,1,["350 g|strangozzi o spaghettoni","400 g|pomodori pelati","2|spicchi d’aglio","1|peperoncino","40 g|pecorino","3 cucchiai|olio extravergine"],
+ ["Soffriggi aglio e peperoncino in olio.","Aggiungi i pelati e cuoci 15 minuti.","Cuoci la pasta e mantecala nel sugo con pecorino."]),
+R("pollo-arrosto","Pollo arrosto alle erbe","Umbria","Secondi",90,4,1,["1|pollo intero (circa 1,4 kg)","1|rametto di rosmarino","4|foglie di salvia","2|spicchi d’aglio","1|limone","3 cucchiai|olio extravergine"],
+ ["Strofina il pollo con sale, olio, erbe tritate e aglio.","Metti nella cavità il limone a spicchi.","Cuoci a 200 °C per 1 ora e 15, girando a metà cottura.","Lascia riposare 10 minuti prima di tagliare."]),
+R("brodetto","Brodetto di pesce","Marche","Secondi",60,4,3,["800 g|pesce misto","300 g|calamari","400 g|pomodori pelati","1|cipolla","100 ml|aceto di vino","2|spicchi d’aglio","q.b.|prezzemolo"],
+ ["Soffriggi cipolla e aglio, aggiungi i calamari a pezzi e cuoci 10 minuti.","Aggiungi pomodoro e aceto, poi il pesce a tranci più sodi.","Cuoci coperto altri 15 minuti senza mescolare troppo.","Servi con pane tostato e prezzemolo."]),
+R("olive-ascolane","Olive all’ascolana","Marche","Antipasti e contorni",90,6,3,["300 g|olive verdi grandi","150 g|carne macinata","50 g|parmigiano","1|uovo","q.b.|pangrattato","q.b.|olio di semi per friggere","q.b.|noce moscata"],
+ ["Cuoci la carne in padella con olio e sale e lascia raffreddare.","Impastala con parmigiano, uovo e noce moscata.","Snocciola le olive a spirale e riempile con il ripieno.","Passa in uovo e pangrattato e friggi in olio caldo."]),
+R("spaghetti-chitarra","Spaghetti alla chitarra con ragù","Abruzzo","Primi",40,4,2,["400 g|spaghetti alla chitarra","300 g|agnello o manzo","400 g|passata di pomodoro","1|cipolla","50 ml|vino rosso","50 g|pecorino"],
+ ["Rosola la carne a pezzettini con la cipolla.","Sfuma con il vino, aggiungi la passata e cuoci 40 minuti.","Cuoci la pasta e condiscila con il ragù e il pecorino."]),
+R("pallotte-cace-ove","Pallotte cacio e uova","Abruzzo","Secondi",50,4,2,["3|uova","150 g|pecorino","150 g|pane raffermo","1|spicchio d’aglio","400 g|passata di pomodoro","1 mazzetto|prezzemolo"],
+ ["Impasta uova, pecorino, pane ammollato, aglio e prezzemolo.","Forma delle polpette e friggile brevemente.","Cuocile 15 minuti nella passata di pomodoro."]),
+R("pasta-nduja","Pasta con la ’nduja","Calabria","Primi",25,4,1,["320 g|rigatoni","80 g|’nduja","300 g|pomodorini","1|cipolla","40 g|pecorino","q.b.|basilico"],
+ ["Soffriggi la cipolla e scioglici la ’nduja.","Aggiungi i pomodorini e cuoci 10 minuti.","Salta la pasta nel sugo con pecorino e basilico."],"La ’nduja è molto piccante: parti con poca."),
+R("melanzane-ripiene","Melanzane ripiene","Calabria","Secondi",60,4,2,["4|melanzane","80 g|pangrattato","50 g|pecorino","2|spicchi d’aglio","200 g|pomodori pelati","1 mazzetto|basilico"],
+ ["Dividi le melanzane a metà e svuotale con un cucchiaio.","Cuoci la polpa a pezzi in padella con aglio e pomodoro.","Mescola con pangrattato, pecorino e basilico e riempi.","Cuoci in forno a 190 °C per 30 minuti."]),
+R("fregola-vongole","Fregola con le vongole","Sardegna","Primi",40,4,2,["300 g|fregola","800 g|vongole","2|spicchi d’aglio","200 g|pomodorini","1|peperoncino","1 mazzetto|prezzemolo"],
+ ["Apri le vongole in padella con aglio e olio.","Aggiungi pomodorini e brodo di vongole.","Cuoci la fregola direttamente nel sugo, aggiungendo acqua, per circa 12 minuti.","Finisci con prezzemolo."]),
+R("seadas","Seadas","Sardegna","Dolci",60,6,3,["300 g|farina","50 g|strutto","300 g|pecorino fresco","1|limone","q.b.|miele","q.b.|olio di semi per friggere"],
+ ["Impasta farina, strutto e acqua tiepida e riposa 30 minuti.","Mescola il formaggio con scorza di limone.","Stendi la pasta, forma dischi, riempi e chiudi.","Friggi e servi con il miele."]),
+R("cavatelli-rapini","Cavatelli con rapini","Molise","Primi",40,4,2,["350 g|cavatelli","500 g|cime di rapa","2|spicchi d’aglio","1|peperoncino","40 g|pecorino","4 cucchiai|olio extravergine"],
+ ["Pulisci le cime di rapa e lessale insieme alla pasta.","Soffriggi aglio e peperoncino nell’olio.","Scola tutto e salta in padella.","Servi con pecorino."]),
+R("scrippelle-mbusse","Scrippelle ’mbusse","Molise","Primi",40,4,2,["3|uova","150 g|farina","300 ml|latte","80 g|pecorino","1.5 l|brodo"],
+ ["Fai una pastella con uova, farina e latte e cuoci delle crêpe sottili.","Cospargi di pecorino e arrotolale.","Disponi in piatti fondi e coprile con brodo bollente."]),
+R("peperoni-cruschi","Pasta con peperoni cruschi","Basilicata","Primi",25,4,1,["320 g|pasta","4|peperoni secchi (o peperoncino)","3|spicchi d’aglio","60 g|pangrattato","4 cucchiai|olio extravergine"],
+ ["Friggi i peperoni secchi pochi secondi nell’olio.","Tosta il pangrattato in padella con aglio.","Condisci la pasta con peperoni e pangrattato."]),
+R("lagane-ceci","Lagane e ceci","Basilicata","Primi",50,4,1,["300 g|lagane o tagliatelle larghe","300 g|ceci cotti","2|spicchi d’aglio","1|peperoncino","4 cucchiai|olio extravergine","1|rametto di rosmarino"],
+ ["Soffriggi aglio, peperoncino e rosmarino.","Aggiungi i ceci e un mestolo d’acqua e cuoci 15 minuti.","Cuoci la pasta e uniscila ai ceci."]),
+R("fagiolini-pomodoro","Fagiolini in umido","Basilicata","Antipasti e contorni",35,4,1,["500 g|fagiolini","300 g|pomodori pelati","1|cipolla","2|patate","3 cucchiai|olio extravergine"],
+ ["Soffriggi la cipolla, aggiungi patate a pezzi e fagiolini.","Unisci il pomodoro e un po’ d’acqua.","Cuoci coperto 25 minuti finché sono teneri."]),
+R("orecchiette-ragu","Orecchiette al ragù","Puglia","Primi",70,4,2,["350 g|orecchiette","300 g|carne macinata","400 g|passata di pomodoro","1|cipolla","50 ml|vino rosso","40 g|pecorino"],
+ ["Soffriggi la cipolla, aggiungi la carne e sfuma con il vino.","Unisci la passata e cuoci 40 minuti.","Cuoci le orecchiette e condisci con pecorino."]),
+R("burrata-pomodoro","Burrata con pomodorini","Puglia","Antipasti e contorni",10,2,1,["250 g|burrata","200 g|pomodorini","1 mazzetto|basilico","2 cucchiai|olio extravergine","q.b.|sale"],
+ ["Tira fuori la burrata dal frigo 15 minuti prima.","Condisci i pomodorini con olio, sale e basilico.","Servi con la burrata al centro."]),
+R("cassata-semplice","Cassata siciliana semplificata","Sicilia","Dolci",90,8,3,["400 g|ricotta","150 g|zucchero","100 g|gocce di cioccolato","1|pan di spagna","q.b.|frutta candita"],
+ ["Setaccia la ricotta con lo zucchero e aggiungi le gocce.","Fodera uno stampo con fette di pan di spagna.","Riempi con la crema e copri con altro pan di spagna.","Lascia riposare in frigo 6 ore, sforma e decora."]),
+R("spaghetti-zucchine-menta","Spaghetti con zucchine e menta","Sicilia","Primi",25,4,1,["320 g|spaghetti","3|zucchine","1|spicchio d’aglio","1 mazzetto|menta","40 g|ricotta salata","3 cucchiai|olio extravergine"],
+ ["Taglia le zucchine a rondelle e rosolale con aglio.","Cuoci la pasta e saltala con le zucchine.","Finisci con menta e ricotta salata grattugiata."]),
+R("pesto-trofie","Trofie con fagiolini e patate","Liguria","Primi",30,4,1,["320 g|trofie","150 g|fagiolini","2|patate","4 cucchiai|pesto"],
+ ["Cuoci patate a dadini e fagiolini in acqua salata per 8 minuti.","Aggiungi le trofie e cuoci al dente.","Condisci con pesto stemperato con un po’ di acqua."]),
+R("torta-verdure","Torta salata di bietole","Liguria","Antipasti e contorni",70,6,2,["1|rotolo di pasta sfoglia","600 g|bietole","250 g|ricotta","2|uova","40 g|parmigiano","q.b.|noce moscata"],
+ ["Lessa le bietole, strizzale e tritale.","Mescola con ricotta, uova, parmigiano e noce moscata.","Riempi la sfoglia in teglia e cuoci a 190 °C per 35 minuti."]),
+R("zuppa-cipolle","Zuppa di cipolle","Emilia-Romagna","Primi",60,4,1,["800 g|cipolle","40 g|burro","1 l|brodo","4 fette|pane","80 g|parmigiano"],
+ ["Affetta le cipolle e stufale a lungo nel burro finché dorate.","Aggiungi il brodo e cuoci 20 minuti.","Servi con crostoni gratinati al parmigiano."]),
+R("risotto-radicchio","Risotto al radicchio","Veneto","Primi",35,4,2,["320 g|riso","1|radicchio","1|scalogno","50 ml|vino rosso","1 l|brodo","40 g|burro","40 g|grana"],
+ ["Rosola lo scalogno, aggiungi il radicchio a strisce e sfuma.","Unisci il riso e cuoci con il brodo per 16 minuti.","Manteca con burro e grana."])
 ];
 export { RICETTE2, REGIONI2 };
