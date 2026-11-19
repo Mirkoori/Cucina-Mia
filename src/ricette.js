@@ -1,4 +1,5 @@
 import { RICETTE2, REGIONI2 } from "./ricette2.js";
+import { STORIE } from "./storie.js";
 // Ricette di base, scritte per Cucina Mia. Dosi indicative: assaggia e regola.
 // ing: [quantità|null, unità, nome, id ingrediente (opzionale)]
 var REGIONI=[
@@ -93,4 +94,5 @@ var RICETTE=[
  note:"Contiene uova crude: non adatto a donne in gravidanza, bambini piccoli e persone fragili. Usa uova freschissime."}
 ];
 RICETTE=RICETTE.concat(RICETTE2);
+RICETTE.forEach(function(r){if(STORIE[r.id])r.storia=STORIE[r.id]});
 export { REGIONI, RC, TIPI, RICETTE };

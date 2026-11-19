@@ -50,7 +50,7 @@ function toast(msg){var t=$("#toast");t.textContent=msg;t.hidden=false;clearTime
 
 /* ---------- ricette ---------- */
 function linkIng(r){r.ing=(r.ing||[]).map(function(i){if(i[3]||!i[2])return i;var id=matchIng(i[2]);return id?[i[0],i[1],i[2],id]:i});return r}
-function baseRecipes(){return RICETTE.map(function(r){return DB.over[r.id]?Object.assign({},DB.over[r.id],{id:r.id,orig:true,edited:true}):Object.assign({orig:true},r)})}
+function baseRecipes(){return RICETTE.map(function(r){return DB.over[r.id]?Object.assign({},DB.over[r.id],{id:r.id,orig:true,edited:true,storia:r.storia}):Object.assign({orig:true},r)})}
 function allRecipes(){return baseRecipes().concat(DB.mine.map(function(r){return Object.assign({},r,{user:true})})).map(linkIng)}
 function getRecipe(id){return allRecipes().filter(function(r){return r.id===id})[0]}
 function isFav(id){return DB.fav.indexOf(id)>-1}
@@ -375,6 +375,7 @@ function sheetRec(r){
     '<div><p class="lbl">Per quante persone</p><div class="stepper"><button data-act="pers" data-d="-1" aria-label="Meno persone">'+IC.minus+'</button><output aria-live="polite">'+recPers+(recPers===1?" persona":" persone")+'</output><button data-act="pers" data-d="1" aria-label="Più persone">'+IC.plus+'</button></div></div>'+
     '<div><p class="lbl">Ingredienti</p><ul class="ings">'+ing+'</ul></div>'+
     '<div><p class="lbl">Preparazione</p><ol class="steps">'+steps+'</ol></div>'+
+    (r.storia?'<div class="tip storia"><p class="lbl">Un po’ di storia</p><p>'+esc(r.storia)+'</p></div>':'')+
     (r.note?'<div class="tip"><p class="lbl">Da sapere</p><p>'+esc(r.note)+'</p></div>':'')+
    '</div>'+
    '<div class="sh-cta'+(third?" three":"")+'"><button class="btn pri" data-act="fav" data-id="'+esc(r.id)+'" aria-pressed="'+fav+'">'+(fav?IC.heartOn+"Preferita":IC.heart+"Preferita")+'</button><button class="btn" data-act="edit" data-id="'+esc(r.id)+'">Modifica</button>'+third+'</div>';
