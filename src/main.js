@@ -272,6 +272,9 @@ function toolsHTML(){
     '<label class="fld"><span>Nome</span><input id="tmL" type="text" placeholder="Pasta" maxlength="24"></label></div>'+
     '<div class="preset"><button class="chip" data-act="tpreset" data-m="3">3 min</button><button class="chip" data-act="tpreset" data-m="5">5 min</button><button class="chip" data-act="tpreset" data-m="10">10 min</button><button class="chip" data-act="tpreset" data-m="15">15 min</button><button class="chip" data-act="tpreset" data-m="30">30 min</button></div>'+
     '<div style="margin-top:12px"><button class="btn pri" data-act="tadd" style="width:100%">Avvia timer</button></div><div class="timers" id="timers"></div></section>'+
+  '<section class="tool"><h3>Cosa posso cucinare</h3><p class="sub">Scrivi gli ingredienti che hai in casa: ti mostro le ricette che puoi fare, o quasi. Sale, olio e pepe li do per scontati.</p>'+
+    '<label class="search"><input id="ckQ" type="search" placeholder="Es. patate, uova, zucchine…" autocomplete="off" aria-label="Cerca un ingrediente che hai"></label>'+
+    '<div class="preset" id="ckSug"></div><div class="preset" id="ckSel"></div><div id="ckRes"></div></section>'+
   '<section class="tool"><h3>Tempi di cottura</h3><p class="sub">Tempi indicativi: dipendono da dimensione, fiamma e forno.</p><ul class="times">'+
     TEMPI.map(function(t){return '<li><span>'+esc(t[0])+'</span><b>'+esc(t[1])+'</b></li>'}).join("")+'</ul></section>'+
   '<section class="tool"><h3>I tuoi dati</h3><p class="sub">Preferite, ricette tue, modifiche e menu restano solo su questo telefono. Salva un file di backup per non perderli (cambio telefono, reinstallazione) e ricaricalo quando serve.</p>'+
@@ -317,9 +320,40 @@ function convCalc(){
     '<div><b>'+t(ml/240)+'</b><small>tazze (240 ml)</small></div><div><b>'+t(ml/15)+'</b><small>cucchiai (15 ml)</small></div>';
 }
 function tempCalc(){var c=parseFloat($("#cvC").value);$("#cvF").textContent=isNaN(c)?"—":Math.round(c*9/5+32)+" °F"}
+/* ---------- cosa posso cucinare ---------- */
+var cookSel=[],COOK_SKIP={sale:1,olio:1,pepe:1};
+function foldTxt(x){return String(x).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function renderCookSug(){
+  var el=$("#ckSug"),inp=$("#ckQ");if(!el||!inp)return;
+  var q=foldTxt(inp.value.trim());
+  if(!q){el.innerHTML="";return}
+  var L=V.filter(function(v){return cookSel.indexOf(v.id)<0&&(foldTxt(v.n).indexOf(q)>-1||(v.k||[]).some(function(k){return foldTxt(k).indexOf(q)>-1}))}).slice(0,8);
+  el.innerHTML=L.length?L.map(function(v){return '<button class="chip" data-act="ckadd" data-id="'+v.id+'">+ '+esc(v.n)+'</button>'}).join(""):'<p class="note" style="margin:0">Nessun ingrediente trovato.</p>';
+}
+function renderCook(){
+  var sel=$("#ckSel"),res=$("#ckRes");if(!sel||!res)return;
+  sel.innerHTML=cookSel.map(function(id){var v=BY[id];return v?'<button class="chip on" data-act="ckdel" data-id="'+id+'" aria-label="Togli '+esc(v.n)+'">'+esc(v.n)+' ✕</button>':''}).join("")+(cookSel.length>1?'<button class="chip" data-act="ckclear">Svuota</button>':'');
+  if(!cookSel.length){res.innerHTML="";return}
+  var out=[];
+  allRecipes().forEach(function(r){
+    var ids=[];r.ing.forEach(function(i){if(i[3]&&!COOK_SKIP[i[3]]&&ids.indexOf(i[3])<0)ids.push(i[3])});
+    if(!ids.length)return;
+    var have=ids.filter(function(id){return cookSel.indexOf(id)>-1}),miss=ids.filter(function(id){return cookSel.indexOf(id)<0});
+    if(!have.length)return;
+    out.push({r:r,have:have.length,miss:miss,tot:ids.length});
+  });
+  out.sort(function(a,b){return a.miss.length-b.miss.length||b.have-a.have||a.r.n.localeCompare(b.r.n,"it")});
+  var good=out.filter(function(o){return o.miss.length<=3&&o.have>=Math.min(2,cookSel.length)}).slice(0,30);
+  if(!good.length)good=out.slice(0,15);
+  res.innerHTML=good.length?'<p class="lbl" style="margin-top:14px">'+good.length+(good.length===1?" ricetta":" ricette")+'</p>'+good.map(function(o){
+    var r=o.r,m=o.miss.length?"Mancano: "+o.miss.slice(0,4).map(function(id){return BY[id]?BY[id].n.toLowerCase():id}).join(", ")+(o.miss.length>4?"…":""):"Hai tutto!";
+    return '<button class="rrow" data-act="rec" data-id="'+esc(r.id)+'" style="--c:'+(RC[r.reg]||"#FFD9A0")+';margin-bottom:8px"><span><b>'+esc(r.n)+'</b><small>'+esc(m)+'</small></span>'+IC.next+'</button>';
+  }).join(""):'<p class="note" style="margin:12px 0 0">Nessuna ricetta usa questi ingredienti. Prova ad aggiungerne altri.</p>';
+}
 function renderStrumenti(){
   var root=$("#tools");
   if(!root.firstChild){root.innerHTML=toolsHTML()}
+  renderCook();
   renderTimers();
 }
 
@@ -593,6 +627,9 @@ document.addEventListener("click",function(e){
     saveDB();t.setAttribute("aria-pressed",String(i<0));t.innerHTML=(i<0?IC.heartOn:IC.heart)+"Preferita";
     if(currentView()==="ricettario")renderRicettario();
   }
+  else if(a==="ckadd"){if(cookSel.indexOf(id)<0)cookSel.push(id);var ci=$("#ckQ");if(ci){ci.value="";ci.focus()}renderCookSug();renderCook()}
+  else if(a==="ckdel"){cookSel=cookSel.filter(function(x){return x!==id});renderCookSug();renderCook()}
+  else if(a==="ckclear"){cookSel=[];renderCook()}
   else if(a==="addmenu"){openSheet("addmenu",id,true)}
   else if(a==="addm"){var am=DB.menus.filter(function(x){return x.id===t.dataset.mid})[0];if(am){var ai=am.rec.indexOf(id);if(ai>-1){am.rec.splice(ai,1);toast("Tolta da «"+am.n+"»")}else{am.rec.push(id);toast("Aggiunta a «"+am.n+"»")}saveDB();var asc=$(".sheet").scrollTop;showSheet(sheetAddMenu(getRecipe(id)));$(".sheet").scrollTop=asc}}
   else if(a==="addnew"){var inp=$("#newMenuName"),nn=inp?inp.value.trim():"";if(!nn){toast("Scrivi un nome per il menu");if(inp)inp.focus()}else{DB.menus.unshift({id:"m"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),n:nn,pers:4,rec:[id],done:{}});saveDB();toast("Menu «"+nn+"» creato");showSheet(sheetAddMenu(getRecipe(id)))}}
@@ -629,6 +666,7 @@ document.addEventListener("input",function(e){
   var el=e.target;
   if(el.id==="q"){state.q=el.value;renderGrid()}
   else if(el.id==="rq"){state.rq=el.value;renderRicettario()}
+  else if(el.id==="ckQ"){renderCookSug()}
 });
 document.addEventListener("change",function(e){
   var el=e.target;
