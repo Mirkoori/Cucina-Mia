@@ -4,6 +4,9 @@ import "@fontsource/dm-mono/400.css";
 import "@fontsource/dm-mono/500.css";
 import "./style.css";
 import { Preferences } from "@capacitor/preferences";
+import { Capacitor } from "@capacitor/core";
+import { Filesystem, Directory, Encoding } from "@capacitor/filesystem";
+import { Share } from "@capacitor/share";
 import { art } from "./art.js";
 import { MESI, MES3, MES3L, LET, V, BY, CATS } from "./data.js";
 import { REGIONI, RC, TIPI, RICETTE } from "./ricette.js";
@@ -279,7 +282,38 @@ function toolsHTML(){
     '<div class="preset"><button class="chip" data-act="tpreset" data-m="3">3 min</button><button class="chip" data-act="tpreset" data-m="5">5 min</button><button class="chip" data-act="tpreset" data-m="10">10 min</button><button class="chip" data-act="tpreset" data-m="15">15 min</button><button class="chip" data-act="tpreset" data-m="30">30 min</button></div>'+
     '<div style="margin-top:12px"><button class="btn pri" data-act="tadd" style="width:100%">Avvia timer</button></div><div class="timers" id="timers"></div></section>'+
   '<section class="tool"><h3>Tempi di cottura</h3><p class="sub">Tempi indicativi: dipendono da dimensione, fiamma e forno.</p><ul class="times">'+
-    TEMPI.map(function(t){return '<li><span>'+esc(t[0])+'</span><b>'+esc(t[1])+'</b></li>'}).join("")+'</ul></section>';
+    TEMPI.map(function(t){return '<li><span>'+esc(t[0])+'</span><b>'+esc(t[1])+'</b></li>'}).join("")+'</ul></section>'+
+  '<section class="tool"><h3>I tuoi dati</h3><p class="sub">Preferite, ricette tue, modifiche e menu restano solo su questo telefono. Salva un file di backup per non perderli (cambio telefono, reinstallazione) e ricaricalo quando serve.</p>'+
+    '<div class="actions"><button class="btn pri" data-act="export">Salva backup</button><button class="btn" data-act="import">Carica backup</button></div>'+
+    '<input id="fileImp" type="file" accept=".json,application/json" hidden></section>';
+}
+function backupData(){return JSON.stringify({app:"cucinamia",v:1,date:new Date().toISOString(),fav:DB.fav,mine:DB.mine,over:DB.over,menus:DB.menus})}
+async function exportBackup(){
+  var txt=backupData(),name="cucina-mia-backup-"+new Date().toISOString().slice(0,10)+".json";
+  try{
+    if(Capacitor.isNativePlatform()){
+      var w=await Filesystem.writeFile({path:name,data:txt,directory:Directory.Cache,encoding:Encoding.UTF8});
+      await Share.share({title:"Backup Cucina Mia",url:w.uri,dialogTitle:"Salva il backup"});
+    }else{
+      var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:"application/json"}));a.download=name;document.body.appendChild(a);a.click();a.remove();toast("Backup salvato");
+    }
+  }catch(e){if(!/cancel|dismiss/i.test(String(e&&e.message||e)))toast("Non sono riuscito a salvare il backup")}
+}
+function importBackup(f){
+  var rd=new FileReader();
+  rd.onerror=function(){toast("Non riesco a leggere il file")};
+  rd.onload=function(){
+    var d;try{d=JSON.parse(rd.result)}catch(e){toast("File non valido");return}
+    if(!d||d.app!=="cucinamia"){toast("Questo non è un backup di Cucina Mia");return}
+    if(!confirm("Caricare il backup? I dati si uniscono a quelli già presenti: le ricette e i menu con lo stesso codice vengono sostituiti."))return;
+    var n=0;
+    (Array.isArray(d.fav)?d.fav:[]).forEach(function(x){if(typeof x==="string"&&DB.fav.indexOf(x)<0){DB.fav.push(x);n++}});
+    (Array.isArray(d.mine)?d.mine:[]).forEach(function(r){if(!r||typeof r.id!=="string"||!Array.isArray(r.ing))return;DB.mine=DB.mine.filter(function(x){return x.id!==r.id});DB.mine.push(r);n++});
+    if(d.over&&typeof d.over==="object")Object.keys(d.over).forEach(function(k){DB.over[k]=d.over[k];n++});
+    (Array.isArray(d.menus)?d.menus:[]).forEach(function(m){if(!m||typeof m.id!=="string"||!Array.isArray(m.rec))return;DB.menus=DB.menus.filter(function(x){return x.id!==m.id});DB.menus.push({id:m.id,n:String(m.n||"Menu"),pers:+m.pers||4,rec:m.rec,done:m.done&&typeof m.done==="object"?m.done:{}});n++});
+    saveDB();toast("Backup caricato");route();
+  };
+  rd.readAsText(f);
 }
 function convCalc(){
   var q=parseFloat($("#cvQ").value),vu=VOLU[+$("#cvU").value],d=DENS[+$("#cvI").value][1];
@@ -533,6 +567,8 @@ document.addEventListener("click",function(e){
     delete DB.over[id];saveDB();state.sheet.fresh=true;renderSheet();toast("Ricetta originale ripristinata");
     if(currentView()==="ricettario")renderRicettario();
   }
+  else if(a==="export"){exportBackup()}
+  else if(a==="import"){var fi=$("#fileImp");if(fi)fi.click()}
   else if(a==="tadd"){addTimer($("#tmM").value,$("#tmL").value.trim());$("#tmM").value="";$("#tmL").value=""}
   else if(a==="tpreset"){addTimer(t.dataset.m,$("#tmL").value.trim())}
   else if(a==="tdel"){timers=timers.filter(function(x){return x.id!==+id});renderTimers()}
@@ -550,6 +586,7 @@ document.addEventListener("input",function(e){
 document.addEventListener("change",function(e){
   var el=e.target;
   if(el.id==="cvU"||el.id==="cvI")convCalc();
+  else if(el.id==="fileImp"&&el.files&&el.files[0]){var fb=el.files[0];el.value="";importBackup(fb)}
   else if((el.id==="fileCam"||el.id==="fileGal")&&el.files&&el.files[0]){var f=el.files[0];el.value="";scanFile(f)}
 });
 window.addEventListener("hashchange",route);
