@@ -355,3 +355,15 @@ input[type=file]{display:none}
 .mit.on .bx{background:var(--accent);color:#2A1710}
 .sharedbox{display:grid;gap:10px}
 .sharedbox .btn{text-decoration:none;display:flex;align-items:center;justify-content:center}
+
+.bigtimer h3{font-size:30px}
+.bigtimer .fld input{height:64px;font-size:18px}
+.bigtimer #tmM{font-size:30px;font-weight:800;text-align:center}
+.bigtimer .fld span{font-size:13px}
+.bigtimer .preset{gap:10px}
+.bigtimer .preset .chip{min-height:52px;padding:0 18px;font-size:18px;font-weight:800}
+.bigtimer>div>.btn.pri{height:64px;font-size:20px}
+.bigtimer .timer{padding:16px 16px;border-radius:20px}
+.bigtimer .timer b{font-size:52px;line-height:1}
+.bigtimer .timer small{font-size:14px;margin-bottom:4px}
+.bigtimer .timer button{min-width:52px;height:52px}

@@ -267,16 +267,7 @@ function addTimer(min,label){
   ensureTick();renderTimers();
 }
 function toolsHTML(){
-  var dens=DENS.map(function(d,i){return '<option value="'+i+'">'+d[0]+'</option>'}).join("");
-  var vols=VOLU.map(function(v,i){return '<option value="'+i+'">'+v[1]+'</option>'}).join("");
-  return '<section class="tool"><h3>Conversioni</h3><p class="sub">Da grammi a tazze e cucchiai (e il contrario) per gli ingredienti più comuni. Valori indicativi.</p>'+
-    '<div class="two"><label class="fld"><span>Quantità</span><input id="cvQ" type="number" inputmode="decimal" min="0" step="any" value="200"></label>'+
-    '<label class="fld"><span>Unità</span><select id="cvU">'+vols+'</select></label></div>'+
-    '<label class="fld" style="margin-top:10px"><span>Ingrediente</span><select id="cvI">'+dens+'</select></label>'+
-    '<div class="conv-out" id="cvOut"></div>'+
-    '<div class="two" style="margin-top:14px"><label class="fld"><span>Gradi °C</span><input id="cvC" type="number" inputmode="decimal" value="180"></label>'+
-    '<div class="conv-out" style="margin:0;grid-template-columns:1fr"><div><b id="cvF">356 °F</b><small>Fahrenheit</small></div></div></div></section>'+
-  '<section class="tool"><h3>Timer</h3><p class="sub">Più timer insieme. Tieni l’app aperta: quando finisce suona e vibra.</p>'+
+  return '<section class="tool bigtimer"><h3>Timer</h3><p class="sub">Più timer insieme. Tieni l’app aperta: quando finisce suona e vibra.</p>'+
     '<div class="two"><label class="fld"><span>Minuti</span><input id="tmM" type="number" inputmode="decimal" min="0" step="any" placeholder="10"></label>'+
     '<label class="fld"><span>Nome</span><input id="tmL" type="text" placeholder="Pasta" maxlength="24"></label></div>'+
     '<div class="preset"><button class="chip" data-act="tpreset" data-m="3">3 min</button><button class="chip" data-act="tpreset" data-m="5">5 min</button><button class="chip" data-act="tpreset" data-m="10">10 min</button><button class="chip" data-act="tpreset" data-m="15">15 min</button><button class="chip" data-act="tpreset" data-m="30">30 min</button></div>'+
@@ -328,7 +319,7 @@ function convCalc(){
 function tempCalc(){var c=parseFloat($("#cvC").value);$("#cvF").textContent=isNaN(c)?"—":Math.round(c*9/5+32)+" °F"}
 function renderStrumenti(){
   var root=$("#tools");
-  if(!root.firstChild){root.innerHTML=toolsHTML();convCalc();tempCalc()}
+  if(!root.firstChild){root.innerHTML=toolsHTML()}
   renderTimers();
 }
 
@@ -638,13 +629,10 @@ document.addEventListener("input",function(e){
   var el=e.target;
   if(el.id==="q"){state.q=el.value;renderGrid()}
   else if(el.id==="rq"){state.rq=el.value;renderRicettario()}
-  else if(el.id==="cvQ"||el.id==="cvU"||el.id==="cvI"){convCalc()}
-  else if(el.id==="cvC"){tempCalc()}
 });
 document.addEventListener("change",function(e){
   var el=e.target;
-  if(el.id==="cvU"||el.id==="cvI")convCalc();
-  else if(el.id==="fileImp"&&el.files&&el.files[0]){var fb=el.files[0];el.value="";importBackup(fb)}
+  if(el.id==="fileImp"&&el.files&&el.files[0]){var fb=el.files[0];el.value="";importBackup(fb)}
   else if((el.id==="fileCam"||el.id==="fileGal")&&el.files&&el.files[0]){var f=el.files[0];el.value="";scanFile(f)}
 });
 window.addEventListener("hashchange",route);
