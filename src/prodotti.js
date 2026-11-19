@@ -63,8 +63,8 @@ export function initProdotti(c){
   async function openScan(){
     if(scan)return;
     if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast("La fotocamera non è disponibile: scrivi il codice");return}
-    var box=document.createElement("div");box.className="scanbox";box.setAttribute("role","dialog");box.setAttribute("aria-modal","true");
-    box.innerHTML='<video playsinline muted autoplay></video><div class="scanframe" aria-hidden="true"></div><p>Inquadra il codice a barre</p><button class="btn" data-act="pf-close">Chiudi</button>';
+    var box=document.createElement("div");box.className="pfscan";box.setAttribute("role","dialog");box.setAttribute("aria-modal","true");
+    box.innerHTML='<video playsinline muted autoplay></video><div class="pfframe" aria-hidden="true"></div><p>Inquadra il codice a barre</p><button class="btn" data-act="pf-close">Chiudi</button>';
     document.body.appendChild(box);document.body.style.overflow="hidden";
     var video=box.querySelector("video");scan={box:box,stop:function(){}};
     var done=false;
