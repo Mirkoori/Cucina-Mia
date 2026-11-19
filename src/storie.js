@@ -30,4 +30,7 @@ export var STORIE={
 "polenta-fritta":"La polenta esisteva già prima dell’arrivo del mais, fatta con farro, orzo e altri cereali. Il mais, arrivato dalle Americhe dopo il 1492, si diffuse nel Nord Italia tra Cinquecento e Seicento e diventò la polenta gialla che conosciamo.",
 "arrosticini":"Sono legati alla tradizione dei pastori abruzzesi, che cuocevano piccoli pezzi di carne di pecora su spiedini sottili sulla brace."
 ,"torta-barozzi":"Fu creata a Vignola, vicino a Modena, dal pasticcere Eugenio Gollini nel 1886 e all’inizio si chiamava «torta nera». Nel 1907, per i quattrocento anni dalla nascita dell’architetto vignolese Jacopo Barozzi, prese il nome di Barozzi. La ricetta originale è segreta e custodita dai discendenti: quella qui sotto è solo un’imitazione casalinga."
+,"puttanesca":"L’origine del nome è discussa e probabilmente popolare: si dice sia nato a Napoli o a Ischia negli anni Cinquanta, ma non ci sono prove certe. Il piatto usa ingredienti che si trovano sempre in dispensa, per questo è nato come cucina veloce.",
+"suppli":"Si chiamano «supplì al telefono» per il filo di mozzarella che si allunga quando li si morde, simile al filo di una cornetta. Sono tipici di Roma, dove si mangiano come cibo da strada.",
+"cannoli":"Il cannolo è associato al Carnevale siciliano. Una leggenda lo fa nascere in un harem di Caltanissetta in epoca araba, ma sono racconti popolari più che fatti documentati."
 };
