@@ -170,7 +170,7 @@ function renderIngredienti(){
   var sel=$('.mbtn[aria-selected="true"]',strip);
   if(sel)strip.scrollLeft=sel.offsetLeft-strip.clientWidth/2+sel.offsetWidth/2;
   $("#seg").innerHTML=[["stagione","Di stagione"],["sempre","Sempre"],["tutti","Tutti"]].map(function(x){return '<button data-act="seg" data-k="'+x[0]+'" aria-pressed="'+(state.seg===x[0])+'">'+x[1]+'</button>'}).join("");
-  $("#cats").innerHTML=CATS.map(function(c){return '<button class="chip" data-act="cat" data-k="'+esc(c)+'" aria-pressed="'+(state.cat===c)+'">'+esc(c)+'</button>'}).join("");
+  $("#cats").innerHTML='<label class="sel"><span>Categoria</span><select id="selCat" aria-label="Categoria">'+CATS.map(function(c){return '<option value="'+esc(c)+'"'+(state.cat===c?" selected":"")+'>'+(c==="Tutti"?"Tutte le categorie":esc(c))+'</option>'}).join("")+'</select></label>';
   renderGrid();
 }
 
@@ -206,12 +206,11 @@ function renderRicettario(){
   if(state.rseg==="regioni"){
     var cnt={};RICETTE.forEach(function(r){cnt[r.reg]=(cnt[r.reg]||0)+1});
     regs.hidden=false;
-    regs.innerHTML=['Tutte'].concat(REGIONI.map(function(r){return r.k})).map(function(k){
-      var dot=k==="Tutte"?"":'<span class="dot" style="background:'+RC[k]+'"></span>';
-      return '<button class="chip" data-act="rreg" data-k="'+esc(k)+'" aria-pressed="'+(state.rreg===k)+'">'+dot+esc(k)+(k==="Tutte"?"":" · "+(cnt[k]||0))+'</button>';
-    }).join("");
+    regs.innerHTML='<label class="sel"><span>Regione</span><select id="selReg" aria-label="Regione">'+['Tutte'].concat(REGIONI.map(function(r){return r.k})).map(function(k){
+      return '<option value="'+esc(k)+'"'+(state.rreg===k?" selected":"")+'>'+(k==="Tutte"?"Tutte le regioni":esc(k)+" · "+(cnt[k]||0))+'</option>';
+    }).join("")+'</select></label>';
   }else regs.hidden=true;
-  $("#rtipo").innerHTML=TIPI.map(function(k){return '<button class="chip" data-act="rtipo" data-k="'+esc(k)+'" aria-pressed="'+(state.rtipo===k)+'">'+esc(k)+'</button>'}).join("");
+  $("#rtipo").innerHTML='<label class="sel"><span>Tipo di piatto</span><select id="selTipo" aria-label="Tipo di piatto">'+TIPI.map(function(k){return '<option value="'+esc(k)+'"'+(state.rtipo===k?" selected":"")+'>'+(k==="Tutte"?"Tutti i tipi":esc(k))+'</option>'}).join("")+'</select></label>';
   if($("#rq").value!==state.rq)$("#rq").value=state.rq;
   var L=recipesFor();
   $("#rcount").textContent=L.length+(L.length===1?" ricetta":" ricette");
@@ -680,6 +679,12 @@ document.addEventListener("click",function(e){
   else if(a==="tplus"){var pt=timers.filter(function(x){return x.id===+id})[0];if(pt){pt.end+=60000;pt.total+=60;renderTimers()}}
   else if(a==="tstop"){timers=timers.filter(function(x){return x.id!==+id});if(fullId===+id)fullId=null;renderTimers()}
   else if(a==="tdel"){timers=timers.filter(function(x){return x.id!==+id});renderTimers()}
+});
+document.addEventListener("change",function(e){
+  var el=e.target;
+  if(el.id==="selReg"){state.rreg=el.value;renderRicettario()}
+  else if(el.id==="selTipo"){state.rtipo=el.value;renderRicettario()}
+  else if(el.id==="selCat"){state.cat=el.value;if(state.cat!=="Tutti"&&state.cat!=="Verdure"&&state.cat!=="Frutta"&&state.seg==="stagione")state.seg="tutti";renderIngredienti()}
 });
 document.addEventListener("keydown",function(e){
   if(e.key==="Escape"&&state.sheet&&state.sheet.t!=="edit")hideSheet();
