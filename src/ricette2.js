@@ -1015,6 +1015,17 @@ R("pasta-ncasciata","Pasta ’ncasciata","Sicilia","Primi",120,6,3,["400 g|macch
 R("biscotti-regina","Biscotti regina","Sicilia","Dolci",60,15,2,["500 g|farina","150 g|zucchero","100 g|strutto","2|uova","1 bustina|lievito","200 g|semi di sesamo","q.b.|latte"],
  ["Impasta farina, zucchero, strutto, uova e lievito.","Forma dei filoncini e tagliali a tocchetti.","Passali nel latte e poi nei semi di sesamo.","Disponi su teglia.","Cuoci a 180 °C per 20 minuti."]),
 R("sgagliozze","Sgagliozze","Puglia","Antipasti e contorni",60,6,2,["300 g|farina di mais","1,2 l|acqua","1 cucchiaino|sale","q.b.|olio per friggere"],
- ["Porta a bollore l’acqua salata e versa la farina a pioggia mescolando.","Cuoci come una polenta per 30 minuti.","Stendi in un vassoio a 1 cm e lascia raffreddare.","Taglia a rombi.","Friggi in olio caldo e servi croccanti con sale."],"Venivano vendute fritte per strada a Bari.")
+ ["Porta a bollore l’acqua salata e versa la farina a pioggia mescolando.","Cuoci come una polenta per 30 minuti.","Stendi in un vassoio a 1 cm e lascia raffreddare.","Taglia a rombi.","Friggi in olio caldo e servi croccanti con sale."],"Venivano vendute fritte per strada a Bari."),
+// ---- Ripristinate
+R("zuppa-ceci-cozze","Zuppa di ceci e cozze","Toscana","Primi",60,4,2,["250 g|ceci cotti","500 g|cozze","2|spicchi d’aglio","200 g|pomodoro","q.b.|olio e peperoncino"],
+ ["Apri le cozze in padella coperta.","Soffriggi aglio e peperoncino, aggiungi il pomodoro.","Unisci i ceci e le cozze.","Cuoci 10 minuti e servi."]),
+R("pizza-patate-puglia","Pizza di patate","Puglia","Antipasti e contorni",70,4,1,["1 kg|patate","200 g|pomodorini","50 g|pecorino","1 cucchiaio|origano","4 cucchiai|olio extravergine","q.b.|sale"],
+ ["Lessa le patate, schiacciale e condisci con sale e olio.","Stendi in una teglia oliata.","Distribuisci pomodorini, pecorino e origano.","Cuoci a 200 °C per 30 minuti."]),
+R("crema-zucca-fontina","Crema di zucca con fontina","Valle d’Aosta","Primi",40,4,1,["600 g|zucca","100 g|fontina","1|cipolla","500 ml|brodo","2 cucchiai|olio extravergine"],
+ ["Soffriggi la cipolla e aggiungi la zucca a cubetti.","Copri col brodo e cuoci 25 minuti.","Frulla fino a una crema liscia.","Servi con fontina a dadini sciolta sopra."]),
+R("polenta-salsiccia-vda","Polenta e salsiccia","Valle d’Aosta","Secondi",60,4,1,["300 g|farina di mais","4|salsicce","300 g|passata di pomodoro","1|cipolla","2 cucchiai|olio extravergine"],
+ ["Cuoci la polenta con 1,2 litri d’acqua salata per 40 minuti.","Soffriggi la cipolla, rosola le salsicce a pezzi.","Aggiungi la passata e cuoci 20 minuti.","Servi la polenta con il sugo di salsiccia."]),
+R("insalata-polpo-sarda","Insalata di polpo","Sardegna","Antipasti e contorni",60,4,1,["1 kg|polpo","2|patate","1|limone","1 mazzetto|prezzemolo","50 g|olive nere","4 cucchiai|olio extravergine"],
+ ["Lessa il polpo in acqua per 45 minuti e lascialo nel suo brodo.","Lessa le patate a cubetti.","Taglia il polpo a pezzi.","Condisci con olio, limone, prezzemolo e olive e servi tiepido."])
 ];
 export { RICETTE2, REGIONI2 };
