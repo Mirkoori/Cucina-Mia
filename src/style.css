@@ -416,3 +416,11 @@ input[type=file]{display:none}
 .tmf-pre{display:flex;flex-wrap:wrap;gap:8px}
 .tmf-pre .chip{height:46px;font-weight:800}
 .tmfull{overflow-y:auto;gap:16px}
+
+.durrow{display:grid;grid-template-columns:1fr 92px;gap:8px}
+.durrow select{appearance:none;-webkit-appearance:none;border:2px solid var(--edge);border-radius:14px;background:var(--surface);padding:0 8px;font:700 16px var(--f-body);text-align:center}
+.bigtimer .durrow select{height:64px;font-size:18px}
+.tmf-new .durrow select{height:56px}
+.fld .durrow{display:grid;grid-template-columns:minmax(0,1fr) 84px;gap:8px;font:inherit;letter-spacing:0;text-transform:none;color:inherit}
+.fld .durrow input{min-width:0;width:100%}
+.fld .durrow select{min-width:0;width:100%}

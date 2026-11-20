@@ -260,17 +260,17 @@ function renderFull(){
     el.querySelectorAll("[data-tt]").forEach(function(n){var x=timers.filter(function(y){return y.id===+n.dataset.tt})[0];if(x){var l=(x.end-now)/1000;n.textContent=l<=0?"Pronto!":fmtClock(l)}});
     return;
   }
-  var keepM=document.getElementById("tfM"),keepL=document.getElementById("tfL"),vM=keepM?keepM.value:"",vL=keepL?keepL.value:"";
+  var keepM=document.getElementById("tfM"),keepL=document.getElementById("tfL"),keepU=document.getElementById("tfU"),vM=keepM?keepM.value:"",vL=keepL?keepL.value:"",vU=keepU?keepU.value:"1";
   if(!el){el=document.createElement("div");el.id="tmFull";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");document.body.appendChild(el);document.body.style.overflow="hidden"}
   tmSig=sig;el.className="tmfull"+(done?" done":"");
   var strip=timers.length>1?'<div class="tmf-strip" role="group" aria-label="Tutti i timer">'+timers.map(function(x){var l=(x.end-now)/1000;return '<button class="tmf-chip'+(x.id===t.id?" on":"")+(l<=0?" fin":"")+'" data-act="tfull" data-id="'+x.id+'" aria-pressed="'+(x.id===t.id)+'"><small>'+esc(x.label)+'</small><b data-tt="'+x.id+'">'+(l<=0?"Pronto!":fmtClock(l))+'</b></button>'}).join("")+'</div>':'';
-  var panel=tmPanel?'<div class="tmf-new"><div class="two"><label class="fld"><span>Minuti</span><input id="tfM" type="number" inputmode="decimal" min="0" step="any" placeholder="10"></label><label class="fld"><span>Nome</span><input id="tfL" type="text" maxlength="24" placeholder="Es. Sugo"></label></div>'+
-    '<div class="tmf-pre">'+[3,5,10,15,30].map(function(m){return '<button class="chip" data-act="tfpre" data-m="'+m+'">'+m+' min</button>'}).join("")+'</div>'+
+  var panel=tmPanel?'<div class="tmf-new"><div class="form">'+tmField('tfM','tfU')+'<label class="fld"><span>Nome (facoltativo)</span><input id="tfL" type="text" maxlength="24" placeholder="Es. Sugo"></label></div>'+
+    '<div class="tmf-pre">'+tmPresetsHTML('tfpre')+'</div>'+
     '<div class="tmf-btns"><button class="btn pri" data-act="tfstart">Avvia</button><button class="btn" data-act="tfcancel">Annulla</button></div></div>':'';
   el.innerHTML='<div class="tmf-top"><button class="iconbtn" data-act="tmin" aria-label="Riduci a icona">'+IC.back+'</button><span>'+esc(t.label)+'</span><span></span></div>'+strip+
     '<div class="tmf-mid"><b>'+(done?"Pronto!":fmtClock(left))+'</b><div class="tmf-bar" aria-hidden="true"><i style="width:'+pct+'%"></i></div></div>'+
     (panel||('<div class="tmf-btns">'+(done?'<button class="btn pri" data-act="tstop" data-id="'+t.id+'">Chiudi</button>':'<button class="btn" data-act="tplus" data-id="'+t.id+'">+1 min</button><button class="btn danger" data-act="tstop" data-id="'+t.id+'">Ferma</button>')+'</div><button class="btn tmf-add" data-act="tfnew">+ Aggiungi un altro timer</button>'));
-  if(tmPanel){var m=document.getElementById("tfM"),l=document.getElementById("tfL");if(m)m.value=vM;if(l)l.value=vL;if(m&&!vM)m.focus()}
+  if(tmPanel){var m=document.getElementById("tfM"),l=document.getElementById("tfL");if(m)m.value=vM;if(l)l.value=vL;var uu=document.getElementById("tfU");if(uu)uu.value=vU;if(m&&!vM)m.focus()}
 }
 function renderTimers(){
   renderFull();
@@ -292,16 +292,21 @@ function ensureTick(){
   },500);
 }
 function addTimer(min,label){
-  min=+min;if(!(min>0)){toast("Scrivi quanti minuti");return}
-  var nt={id:tid++,label:label||(min+" min"),end:Date.now()+min*60000,total:min*60,done:false};
+  min=+min;if(!(min>0)){toast("Scrivi la durata");return}
+  var nt={id:tid++,label:label||fmtMin(Math.round(min*10)/10),end:Date.now()+min*60000,total:min*60,done:false};
   timers.push(nt);fullId=nt.id;tmSig="";
   ensureTick();renderTimers();
 }
+var TM_PRE=[[3, '3 min'], [5, '5 min'], [10, '10 min'], [15, '15 min'], [30, '30 min'], [45, '45 min'], [60, '1 h'], [90, '1 h 30'], [120, '2 h'], [180, '3 h'], [240, '4 h']];
+function tmPresetsHTML(act){return TM_PRE.map(function(x){return '<button class="chip" data-act="'+act+'" data-m="'+x[0]+'">'+x[1]+'</button>'}).join("")}
+function tmField(nid,uid){return '<label class="fld"><span>Durata</span><span class="durrow"><input id="'+nid+'" type="number" inputmode="decimal" min="0" step="any" placeholder="10" aria-label="Durata"><select id="'+uid+'" aria-label="Unità"><option value="1">min</option><option value="60">ore</option></select></span></label>'}
+function tmRead(nid,uid){var n=document.getElementById(nid),u=document.getElementById(uid);return (+(n&&n.value)||0)*(+(u&&u.value)||1)}
+function tmSet(nid,uid,m){var n=document.getElementById(nid),u=document.getElementById(uid);if(!n||!u)return;if(m>=60){u.value="60";n.value=String(Math.round(m/60*100)/100)}else{u.value="1";n.value=String(m)}}
 function toolsHTML(){
   return '<section class="tool bigtimer"><h3>Timer</h3><p class="sub">Più timer insieme. Tieni l’app aperta: quando finisce suona e vibra.</p>'+
-    '<div class="two"><label class="fld"><span>Minuti</span><input id="tmM" type="number" inputmode="decimal" min="0" step="any" placeholder="10"></label>'+
-    '<label class="fld"><span>Nome</span><input id="tmL" type="text" placeholder="Pasta" maxlength="24"></label></div>'+
-    '<div class="preset"><button class="chip" data-act="tpreset" data-m="3">3 min</button><button class="chip" data-act="tpreset" data-m="5">5 min</button><button class="chip" data-act="tpreset" data-m="10">10 min</button><button class="chip" data-act="tpreset" data-m="15">15 min</button><button class="chip" data-act="tpreset" data-m="30">30 min</button></div>'+
+    '<div class="form">'+tmField('tmM','tmU')+
+    '<label class="fld"><span>Nome (facoltativo)</span><input id="tmL" type="text" placeholder="Es. Ragù" maxlength="24"></label></div>'+
+    '<div class="preset">'+tmPresetsHTML('tpreset')+'</div>'+
     '<div style="margin-top:12px"><button class="btn pri" data-act="tadd" style="width:100%">Avvia</button></div><div class="timers" id="timers"></div></section>'+
   '<section class="tool"><h3>Cosa posso cucinare</h3><p class="sub">Scrivi gli ingredienti che hai in casa: ti mostro le ricette che puoi fare, o quasi. Sale, olio e pepe li do per scontati.</p>'+
     '<label class="search"><input id="ckQ" type="search" placeholder="Es. patate, uova, zucchine…" autocomplete="off" aria-label="Cerca un ingrediente che hai"></label>'+
@@ -686,13 +691,13 @@ document.addEventListener("click",function(e){
   }
   else if(a==="export"){exportBackup()}
   else if(a==="import"){var fi=$("#fileImp");if(fi)fi.click()}
-  else if(a==="tadd"){addTimer($("#tmM").value,$("#tmL").value.trim());$("#tmM").value="";$("#tmL").value=""}
-  else if(a==="tpreset"){var tm=$("#tmM");if(tm)tm.value=t.dataset.m}
+  else if(a==="tadd"){addTimer(tmRead("tmM","tmU"),$("#tmL").value.trim());$("#tmM").value="";$("#tmL").value="";$("#tmU").value="1"}
+  else if(a==="tpreset"){tmSet("tmM","tmU",+t.dataset.m)}
   else if(a==="tfull"){fullId=+id;renderTimers()}
   else if(a==="tfnew"){tmPanel=true;tmSig="";renderFull()}
   else if(a==="tfcancel"){tmPanel=false;tmSig="";renderFull()}
-  else if(a==="tfpre"){var fm=$("#tfM");if(fm)fm.value=t.dataset.m}
-  else if(a==="tfstart"){var fv=+($("#tfM")||{}).value,fl=(($("#tfL")||{}).value||"").trim();if(!(fv>0)){toast("Scrivi quanti minuti");var f2=$("#tfM");if(f2)f2.focus()}else{tmPanel=false;tmSig="";addTimer(fv,fl)}}
+  else if(a==="tfpre"){tmSet("tfM","tfU",+t.dataset.m)}
+  else if(a==="tfstart"){var fv=tmRead("tfM","tfU"),fl=(($("#tfL")||{}).value||"").trim();if(!(fv>0)){toast("Scrivi la durata");var f2=$("#tfM");if(f2)f2.focus()}else{tmPanel=false;tmSig="";addTimer(fv,fl)}}
   else if(a==="tmin"){fullId=null;tmPanel=false;tmSig="";renderTimers()}
   else if(a==="tplus"){var pt=timers.filter(function(x){return x.id===+id})[0];if(pt){pt.end+=60000;pt.total+=60;renderTimers()}}
   else if(a==="tstop"){timers=timers.filter(function(x){return x.id!==+id});if(fullId===+id)fullId=null;renderTimers()}
