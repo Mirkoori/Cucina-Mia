@@ -424,3 +424,17 @@ input[type=file]{display:none}
 .fld .durrow{display:grid;grid-template-columns:minmax(0,1fr) 84px;gap:8px;font:inherit;letter-spacing:0;text-transform:none;color:inherit}
 .fld .durrow input{min-width:0;width:100%}
 .fld .durrow select{min-width:0;width:100%}
+
+/* ---- Etichette alimentari ---- */
+.dietrow{display:flex;flex-wrap:wrap;gap:8px;padding:12px 0 2px}
+.dtags{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.dtag{font:500 10px var(--f-mono);letter-spacing:.03em;text-transform:uppercase;background:var(--on-color);color:var(--paper);border-radius:999px;padding:2px 7px}
+.dtag.adatt{background:transparent;color:var(--on-color);border:1.5px solid var(--on-color);padding:1px 6px}
+.tip.dieta ul{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px}
+.tip.dieta li{display:grid;gap:2px;font-size:15.5px;line-height:1.35}
+.tip.dieta li b{font-weight:800}
+.tip.dieta li.ok b::before{content:"✓ "}
+.tip.dieta li.ad b::before{content:"~ "}
+.tip.dieta li.ve b::before{content:"? "}
+.tip.dieta li span{font-size:14.5px;opacity:.9}
+.tip.dieta .small{font-size:12.5px;line-height:1.4;opacity:.75}

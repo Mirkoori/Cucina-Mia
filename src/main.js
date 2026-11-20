@@ -9,6 +9,7 @@ import { Filesystem, Directory, Encoding } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import { initProdotti } from "./prodotti.js";
 import { art } from "./art.js";
+import { DIETE, dieta, passa } from "./diete.js";
 import { MESI, MES3, MES3L, LET, V, BY, CATS } from "./data.js";
 import { REGIONI, RC, TIPI, RICETTE } from "./ricette.js";
 import { initMenu } from "./menu.js";
@@ -31,7 +32,7 @@ var IC={
 
 /* ---------- stato e salvataggio ---------- */
 var state={month:NOW_M,seg:"stagione",cat:"Tutti",q:"",
-  rseg:"regioni",rreg:"Tutte",rtipo:"Tutte",rq:"",
+  rseg:"regioni",rreg:"Tutte",rtipo:"Tutte",rq:"",rdiet:[],
   sheet:null,stack:[],edit:null};
 var STORE_KEY="cucinamia-dati";
 var DB={fav:[],mine:[],over:{},menus:[]};
@@ -183,6 +184,7 @@ function recipesFor(){
     if(state.rseg==="mie"&&!r.user)return false;
     if(state.rseg==="regioni"&&state.rreg!=="Tutte"&&r.reg!==state.rreg)return false;
     if(state.rtipo!=="Tutte"&&r.tipo!==state.rtipo)return false;
+    if(state.rdiet.length){var dd=dieta(r);if(!state.rdiet.every(function(k){return passa(dd,k)}))return false}
     if(q){
       var hay=foldHay(r.n+" "+(r.reg||"")+" "+r.ing.map(function(i){return i[2]}).join(" "));
       if(hay.indexOf(q)<0)return false;
@@ -191,13 +193,19 @@ function recipesFor(){
   });
   return L.sort(function(a,b){return a.n.localeCompare(b.n,"it")});
 }
+function dietTags(r){
+  if(!state.rdiet.length)return "";
+  var d=dieta(r);
+  return '<span class="dtags">'+DIETE.filter(function(x){return state.rdiet.indexOf(x.k)>-1}).map(function(x){
+    return '<span class="dtag'+(d[x.k].s==="adatt"?" adatt":"")+'">'+esc(x.n)+(d[x.k].s==="adatt"?" *":"")+'</span>'}).join("")+'</span>';
+}
 function rcard(r){
   var im=safeImg(r.img);
   return '<button class="rcard'+(im?" photo":"")+'" data-act="rec" data-id="'+esc(r.id)+'" style="--c:'+(RC[r.reg]||"#FFD9A0")+'">'+
     (im?'<span class="ph" style="background-image:url('+im+')"></span>':'')+
     '<span class="fv" aria-hidden="true">'+(isFav(r.id)?IC.heartOn:"")+'</span>'+
     '<span class="rg">'+esc(r.reg||(r.user?"Mia ricetta":""))+(r.edited?" · modificata":"")+'</span>'+
-    '<span class="nm">'+esc(r.n)+'</span>'+
+    '<span class="nm">'+esc(r.n)+'</span>'+dietTags(r)+
     '<span class="mt"><span>'+fmtMin(r.min)+'</span><span>'+esc(r.tipo||"")+'</span></span></button>';
 }
 function renderRicettario(){
@@ -211,6 +219,7 @@ function renderRicettario(){
     }).join("")+'</select></label>';
   }else regs.hidden=true;
   $("#rtipo").innerHTML='<label class="sel"><span>Tipo di piatto</span><select id="selTipo" aria-label="Tipo di piatto">'+TIPI.map(function(k){return '<option value="'+esc(k)+'"'+(state.rtipo===k?" selected":"")+'>'+(k==="Tutte"?"Tutti i tipi":esc(k))+'</option>'}).join("")+'</select></label>';
+  $("#rdiet").innerHTML=DIETE.map(function(x){return '<button class="chip" data-act="rdiet" data-k="'+x.k+'" aria-pressed="'+(state.rdiet.indexOf(x.k)>-1)+'">'+esc(x.n)+'</button>'}).join("");
   if($("#rq").value!==state.rq)$("#rq").value=state.rq;
   var L=recipesFor();
   $("#rcount").textContent=L.length+(L.length===1?" ricetta":" ricette");
@@ -457,6 +466,22 @@ function parseShared(){
 function sharedBanner(){
   return '<div class="tip sharedbox"><p class="lbl">Ricetta condivisa con Cucina Mia</p><p>Un amico ti ha mandato questa ricetta. Con l’app trovi centinaia di ricette italiane, schede degli ingredienti, un menu con la lista della spesa, e puoi salvare le tue.</p><a class="btn pri" href="'+APP_URL+'" target="_blank" rel="noopener">Scarica l’app</a></div>';
 }
+function dietBox(r){
+  var d=dieta(r),rows=[];
+  var T={
+    veg:{si:"Vegetariana",adatt:"Vegetariana se usi",ver:""},
+    glu:{si:"Naturalmente senza glutine",adatt:"Senza glutine se usi",ver:"Senza glutine: da verificare"},
+    lat:{si:"Senza lattosio",adatt:"Senza lattosio se usi",ver:"Senza lattosio: da verificare"}
+  };
+  DIETE.forEach(function(x){
+    var e=d[x.k],t=T[x.k];
+    if(e.s==="si")rows.push('<li class="ok"><b>'+t.si+'</b>'+(e.n?'<span>'+esc(e.n)+'</span>':'')+'</li>');
+    else if(e.s==="adatt")rows.push('<li class="ad"><b>'+t.adatt+'</b><span>'+esc(e.n)+'</span></li>');
+    else if(e.s==="verifica"&&t.ver)rows.push('<li class="ve"><b>'+t.ver+'</b><span>Controlla: '+esc(e.n)+'</span></li>');
+  });
+  if(!rows.length)return "";
+  return '<div class="tip dieta"><p class="lbl">Alimentazione</p><ul>'+rows.join("")+'</ul><p class="small">Calcolato in automatico dagli ingredienti. Per celiachia e intolleranze controlla sempre le etichette dei prodotti confezionati e la contaminazione in cucina.</p></div>';
+}
 function sheetRec(r){
   var f=recPers/(r.pers||4);
   var im=safeImg(r.img);
@@ -474,6 +499,7 @@ function sheetRec(r){
     '<div><p class="lbl">Per quante persone</p><div class="stepper"><button data-act="pers" data-d="-1" aria-label="Meno persone">'+IC.minus+'</button><output aria-live="polite">'+recPers+(recPers===1?" persona":" persone")+'</output><button data-act="pers" data-d="1" aria-label="Più persone">'+IC.plus+'</button></div></div>'+
     '<div><p class="lbl">Ingredienti</p><ul class="ings">'+ing+'</ul></div>'+
     '<div><p class="lbl">Preparazione</p><ol class="steps">'+steps+'</ol></div>'+
+    dietBox(r)+
     (r.storia?'<div class="tip storia"><p class="lbl">Un po’ di storia</p><p>'+esc(r.storia)+'</p></div>':'')+
     (r.note?'<div class="tip"><p class="lbl">Da sapere</p><p>'+esc(r.note)+'</p></div>':'')+
     (r.shared?'':'<button class="btn pri" data-act="addmenu" data-id="'+esc(r.id)+'">Aggiungi a un menu</button><button class="btn" data-act="share" data-id="'+esc(r.id)+'">Condividi la ricetta</button>')+
@@ -655,8 +681,9 @@ document.addEventListener("click",function(e){
   else if(a==="rseg"){state.rseg=t.dataset.k;renderRicettario()}
   else if(a==="rreg"){state.rreg=t.dataset.k;renderRicettario()}
   else if(a==="rtipo"){state.rtipo=t.dataset.k;renderRicettario()}
-  else if(a==="rreset"){state.rreg="Tutte";state.rtipo="Tutte";state.rq="";renderRicettario()}
-  else if(a==="seerec"){var v=BY[id];hideSheet();state.rseg="regioni";state.rreg="Tutte";state.rtipo="Tutte";state.rq=v?v.n:"";if(location.hash==="#ricettario")renderRicettario();else location.hash="#ricettario"}
+  else if(a==="rdiet"){var di=state.rdiet.indexOf(t.dataset.k);if(di>-1)state.rdiet.splice(di,1);else state.rdiet.push(t.dataset.k);renderRicettario()}
+  else if(a==="rreset"){state.rreg="Tutte";state.rtipo="Tutte";state.rq="";state.rdiet=[];renderRicettario()}
+  else if(a==="seerec"){var v=BY[id];hideSheet();state.rseg="regioni";state.rreg="Tutte";state.rtipo="Tutte";state.rdiet=[];state.rq=v?v.n:"";if(location.hash==="#ricettario")renderRicettario();else location.hash="#ricettario"}
   else if(a==="pers"){recPers=Math.max(1,Math.min(50,recPers+(+t.dataset.d)));var r=getRecipe(state.sheet.id);if(r){var sc=$(".sheet").scrollTop;showSheet(sheetRec(r));$(".sheet").scrollTop=sc}}
   else if(a==="fav"){
     var i=DB.fav.indexOf(id);if(i>-1){DB.fav.splice(i,1);toast("Tolta dalle preferite")}else{DB.fav.push(id);toast("Aggiunta alle preferite")}
